@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVNT 학습 앱 — 정맥영양요법 가이드</title>
+<style>
+:root {
+  color-scheme: light;
+  --navy: #0f2b4e;
+  --blue: #1a5276;
+  --accent: #2e86c1;
+  --light-blue: #d6eaf8;
+  --teal: #148f77;
+  --light-teal: #d1f2eb;
+  --orange: #d35400;
+  --light-orange: #fdebd0;
+  --red: #c0392b;
+  --light-red: #fdedec;
+  --yellow: #f39c12;
+  --light-yellow: #fef9e7;
+  --purple: #7d3c98;
+  --light-purple: #f4ecf7;
+  --gray: #566573;
+  --light-gray: #f2f3f4;
+  --border: #d5d8dc;
+  --white: #ffffff;
+  --shadow: 0 2px 12px rgba(15,43,78,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1a1a2e; display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
+
+/* Sidebar */
+.sidebar { width: 224px; background: var(--navy); color: #fff; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
+.sidebar-logo { padding: 22px 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-logo h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
+.sidebar-logo p { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+.nav-section { padding: 12px 0 4px; }
+.nav-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: rgba(255,255,255,0.35); padding: 0 16px 6px; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; font-size: 13px; color: rgba(255,255,255,0.72); }
+.nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.nav-item.active { background: rgba(46,134,193,0.22); border-left-color: #2e86c1; color: #fff; font-weight: 600; }
+.nav-icon { width: 18px; text-align: center; font-size: 14px; }
+
+/* Main */
+.main { flex: 1; overflow-y: auto; }
+.page { display: none; padding: 26px; max-width: 980px; }
+.page.active { display: block; }
+.page-header { margin-bottom: 22px; }
+.page-header h2 { font-size: 22px; font-weight: 800; color: var(--navy); }
+.page-header p { color: var(--gray); margin-top: 4px; font-size: 13px; }
+
+/* Cards */
+.card { background: var(--white); border-radius: 12px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px; }
+.card-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { font-size: 18px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-blue { background: var(--light-blue); color: var(--blue); }
+.badge-teal { background: var(--light-teal); color: var(--teal); }
+.badge-orange { background: var(--light-orange); color: var(--orange); }
+.badge-red { background: var(--light-red); color: var(--red); }
+.badge-yellow { background: var(--light-yellow); color: #856404; }
+.badge-purple { background: var(--light-purple); color: var(--purple); }
+
+/* Info boxes */
+.info-box { border-radius: 8px; padding: 12px 16px; margin: 10px 0; font-size: 13px; line-height: 1.7; }
+.info-box.blue { background: var(--light-blue); border-left: 4px solid var(--accent); }
+.info-box.teal { background: var(--light-teal); border-left: 4px solid var(--teal); }
+.info-box.orange { background: var(--light-orange); border-left: 4px solid var(--orange); }
+.info-box.red { background: var(--light-red); border-left: 4px solid var(--red); }
+.info-box.yellow { background: var(--light-yellow); border-left: 4px solid var(--yellow); }
+.info-box.purple { background: var(--light-purple); border-left: 4px solid var(--purple); }
+.info-box strong { display: block; margin-bottom: 4px; font-size: 13px; }
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { background: var(--navy); color: #fff; padding: 10px 13px; text-align: left; font-weight: 600; }
+.tbl td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+.tbl tr:hover td { background: #f8fbff; }
+.tbl tr:last-child td { border-bottom: none; }
+
+/* Drug card */
+.drug-card { background: #f8fbff; border-radius: 10px; border: 1px solid #c8dff0; padding: 14px 16px; margin-bottom: 10px; }
+.drug-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.drug-dose { font-size: 12px; color: var(--accent); font-weight: 600; margin: 3px 0; }
+.drug-indication { font-size: 12px; color: var(--gray); line-height: 1.6; margin-top: 5px; }
+
+/* Prescription template */
+.rx-card { background: var(--white); border: 2px solid var(--accent); border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+.rx-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap; }
+.rx-title { font-size: 15px; font-weight: 700; color: var(--blue); }
+.rx-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.rx-body { background: #f5f8ff; border-radius: 8px; padding: 14px 16px; font-size: 12.5px; line-height: 1.9; white-space: pre-line; color: #2c3e50; border: 1px solid #dce8f5; margin-top: 12px; }
+.copy-btn { background: var(--accent); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+.copy-btn:hover { background: var(--blue); }
+.copy-btn.copied { background: var(--teal); }
+
+/* Principles list */
+.principle-item { display: flex; gap: 13px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.principle-item:last-child { border-bottom: none; }
+.principle-num { width: 28px; height: 28px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.principle-text { font-size: 13px; line-height: 1.7; color: #2c3e50; }
+
+/* Flow diagram */
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.flow-box { background: var(--light-blue); border: 1px solid #aed6f1; border-radius: 8px; padding: 8px 13px; font-size: 12px; font-weight: 600; color: var(--blue); text-align: center; }
+.flow-arrow { color: var(--gray); font-size: 18px; }
+
+/* Pyramid */
+.pyramid-wrap { max-width: 340px; margin: 12px auto; }
+.pyramid-row { text-align: center; margin: 3px 0; }
+.pyramid-box { display: inline-block; padding: 10px 0; color: #fff; font-size: 12px; font-weight: 600; border-radius: 6px; }
+
+/* Tabs */
+.tab-bar { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: 8px 18px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--gray); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Compare */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Checklist */
+.checklist { list-style: none; }
+.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.6; }
+.checklist li:last-child { border-bottom: none; }
+.check-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+
+/* Home */
+.home-stat { background: var(--white); border-radius: 12px; padding: 18px 16px; box-shadow: var(--shadow); text-align: center; }
+.home-stat .num { font-size: 30px; font-weight: 800; line-height: 1; }
+.home-stat .label { font-size: 12px; color: var(--gray); margin-top: 6px; }
+.quick-btn { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; text-align: left; width: 100%; box-shadow: var(--shadow); transition: all 0.15s; }
+.quick-btn:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(46,134,193,0.15); transform: translateY(-1px); }
+.quick-btn .qb-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+.quick-btn .qb-sub { font-size: 12px; color: var(--gray); margin-top: 3px; }
+
+/* Version tag */
+.version-tag { font-size: 10px; color: rgba(255,255,255,0.3); padding: 12px 16px; margin-top: auto; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h1>💉 IVNT</h1>
+    <p>정맥영양요법 임상 가이드</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">메인</div>
+    <div class="nav-item active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>홈</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">📚 의학 지식</div>
+    <div class="nav-item" onclick="showPage('basic',this)"><span class="nav-icon">🔬</span>IVNT 기초</div>
+    <div class="nav-item" onclick="showPage('antioxidant',this)"><span class="nav-icon">⚡</span>항산화제</div>
+    <div class="nav-item" onclick="showPage('vitamins',this)"><span class="nav-icon">💊</span>비타민 B군</div>
+    <div class="nav-item" onclick="showPage('myers',this)"><span class="nav-icon">🧪</span>Myers' Cocktail</div>
+    <div class="nav-item" onclick="showPage('highdose',this)"><span class="nav-icon">🎯</span>고용량 IVC 항암</div>
+    <div class="nav-item" onclick="showPage('fluid',this)"><span class="nav-icon">💧</span>수액 선택 가이드</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">🏥 실제 처방</div>
+    <div class="nav-item" onclick="showPage('rx-gastro',this)"><span class="nav-icon">🤢</span>장염/소화기</div>
+    <div class="nav-item" onclick="showPage('rx-cold',this)"><span class="nav-icon">🤧</span>감기/독감</div>
+    <div class="nav-item" onclick="showPage('rx-herpes',this)"><span class="nav-icon">🔴</span>대상포진</div>
+    <div class="nav-item" onclick="showPage('rx-skin',this)"><span class="nav-icon">🌿</span>피부염/두드러기</div>
+    <div class="nav-item" onclick="showPage('rx-cervical',this)"><span class="nav-icon">🦴</span>경추통/신경통</div>
+    <div class="nav-item" onclick="showPage('rx-liver',this)"><span class="nav-icon">🫀</span>간기능</div>
+    <div class="nav-item" onclick="showPage('rx-immune',this)"><span class="nav-icon">🛡️</span>면역증강 (싸이모신)</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">📋 소견서</div>
+    <div class="nav-item" onclick="showPage('opinion',this)"><span class="nav-icon">📄</span>소견서 원칙/템플릿</div>
+    <div class="nav-item" onclick="showPage('drugs',this)"><span class="nav-icon">💉</span>약물 전체 목록</div>
+  </div>
+
+  <div class="version-tag">v1.0 · IVNT Clinical Guide</div>
+</nav>
+
+<!-- Main -->
+<div class="main">
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="page-header">
+    <h2>IVNT 정맥영양요법</h2>
+    <p>개원의를 위한 의학 지식 + 실제 처방 통합 임상 가이드</p>
+  </div>
+  <div class="grid-3" style="margin-bottom:20px;">
+    <div class="home-stat"><div class="num" style="color:var(--accent)">8</div><div class="label">주요 적응증</div></div>
+    <div class="home-stat"><div class="num" style="color:var(--teal)">12+</div><div class="label">처방 약물</div></div>
+    <div class="home-stat"><div class="num" style="color:var(--orange)">7</div><div class="label">소견서 템플릿</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">⚡</span>빠른 접근 — 적응증별 처방</div>
+    <div class="grid-2">
+      <button class="quick-btn" onclick="showPage('rx-gastro',null)"><div class="qb-title">🤢 장염/소화기</div><div class="qb-sub">5%DW · 아세트펜 · 뉴트리헥스</div></button>
+      <button class="quick-btn" onclick="showPage('rx-cold',null)"><div class="qb-title">🤧 감기/독감</div><div class="qb-sub">아세트펜 · 지씨엔에이씨 · 페라미플루</div></button>
+      <button class="quick-btn" onclick="showPage('rx-herpes',null)"><div class="qb-title">🔴 대상포진</div><div class="qb-sub">히시파겐씨 · 푸르설타민 · 아세트펜</div></button>
+      <button class="quick-btn" onclick="showPage('rx-skin',null)"><div class="qb-title">🌿 피부염/두드러기</div><div class="qb-sub">히시파겐씨 · 메가비타식스 · 지씨비타오</div></button>
+      <button class="quick-btn" onclick="showPage('rx-cervical',null)"><div class="qb-title">🦴 경추통/어지러움/신경통</div><div class="qb-sub">지씨징코 · 메가네슘 · 푸르설타민</div></button>
+      <button class="quick-btn" onclick="showPage('rx-liver',null)"><div class="qb-title">🫀 간기능 개선</div><div class="qb-sub">히시파겐씨 · 라이넥</div></button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">🔑</span>IVNT 시행 4원칙</div>
+      <div class="principle-item"><div class="principle-num">1</div><div class="principle-text"><strong>강요 금지</strong> — 만족도가 높아지면 환자 스스로 요청</div></div>
+      <div class="principle-item"><div class="principle-num">2</div><div class="principle-text"><strong>경제 여건 감안</strong> — 맞춤 처방</div></div>
+      <div class="principle-item"><div class="principle-num">3</div><div class="principle-text"><strong>의사가 직접 가격 제시</strong> → 신뢰도 증가</div></div>
+      <div class="principle-item"><div class="principle-num">4</div><div class="principle-text"><strong>명확한 칵테일 이름</strong> — 미백주사, 활력주사 등 효능 중심 명명</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">⚠️</span>절대 금지 조합</div>
+      <div class="info-box red"><strong>❌ 칼슘 + 탄산수소나트륨</strong>탄산칼슘 침전물 → 라인 막힘</div>
+      <div class="info-box red"><strong>❌ 비타민C + 셀레늄 (단독 혼합)</strong>셀레늄 침전 (아미노산과 혼합 시 안전)</div>
+      <div class="info-box orange"><strong>⏱️ 글루타치온 — 15분 이내 투여 필수</strong>산화되면 효과 완전 소실</div>
+    </div>
+  </div>
+</div>
+
+<!-- BASIC -->
+<div id="page-basic" class="page">
+  <div class="page-header"><h2>🔬 IVNT 기초</h2><p>정맥영양요법의 정의, 원리, 원칙</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📖</span>IVNT란?</div>
+    <p style="font-size:13px;line-height:1.9;color:#2c3e50;margin-bottom:14px;">필수 영양소, 항산화제, 미네랄, 아미노산 등을 <strong>정맥을 통해 직접 투여</strong>하는 치료법. 경구 복용과 달리 <strong>100% 생체이용률</strong>을 가지며, 소화기관을 거치지 않아 빠른 효과를 기대할 수 있습니다.</p>
+    <div class="compare-grid">
+      <div class="info-box" style="background:var(--light-gray);border-left:4px solid var(--gray);">
+        <strong>💊 경구 복용</strong>
+        생체이용률: 5~20%<br>속도: 느림<br>소화기 영향 받음<br>1회 대량 투여 불가
+      </div>
+      <div class="info-box blue">
+        <strong>💉 정맥 투여 (IVNT)</strong>
+        생체이용률: <strong>100%</strong><br>속도: 빠름<br>소화기 우회<br>고용량 투여 가능
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span>IVNT 시행의 4가지 원칙</div>
+    <div class="principle-item"><div class="principle-num">1</div><div class="principle-text"><strong>강요 금지</strong> — 만족도가 높아지면 환자가 자동으로 요청하게 됩니다</div></div>
+    <div class="principle-item"><div class="principle-num">2</div><div class="principle-text"><strong>경제 여건 감안</strong> — 환자 상황에 맞는 맞춤 처방</div></div>
+    <div class="principle-item"><div class="principle-num">3</div><div class="principle-text"><strong>의사가 직접 가격 제시</strong> — 환자의 만족도와 신뢰도 증가</div></div>
+    <div class="principle-item"><div class="principle-num">4</div><div class="principle-text"><strong>명확한 칵테일 이름</strong> — 미백주사, 활력주사 등 효능 중심 명명이 효과적</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">⚠️</span>금기 사항 및 주의</div>
+    <div class="compare-grid">
+      <div class="info-box red"><strong>❌ 함께 섞지 말 것</strong>• 칼슘 + 탄산수소나트륨 → 침전<br>• 비타민C + 셀레늄 단독 → 침전<br>• 비타민C + 글루콘산칼슘 동시 투여 금지</div>
+      <div class="info-box yellow"><strong>💧 기초수액 선택 주의</strong>• 당뇨/암환자: DW(포도당) 사용 주의<br>• 고용량 비타민C(30g↑): 증류액 사용<br>• 글루타치온: 15분 내 투여 필수<br>• 미네랄: 아미노산과 혼합 시 흡수↑</div>
+    </div>
+  </div>
+</div>
+
+<!-- ANTIOXIDANT -->
+<div id="page-antioxidant" class="page">
+  <div class="page-header"><h2>⚡ 항산화제</h2><p>비타민 C · 리포산 · 글루타치온</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">🔺</span>항산화제 피라미드</div>
+    <div class="pyramid-wrap">
+      <div class="pyramid-row"><div class="pyramid-box" style="width:52%;background:#e74c3c;">글루타치온 (Master)</div></div>
+      <div class="pyramid-row"><div class="pyramid-box" style="width:68%;background:#e67e22;">비타민 C + E + 리포산</div></div>
+      <div class="pyramid-row"><div class="pyramid-box" style="width:82%;background:#f1c40f;color:#333;">비타민 B + 미네랄</div></div>
+      <div class="pyramid-row"><div class="pyramid-box" style="width:92%;background:#27ae60;">항산화 음식 + 운동</div></div>
+      <div class="pyramid-row"><div class="pyramid-box" style="width:100%;background:#2980b9;">건강한 생활습관</div></div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('ao','vitc',this)">🍊 비타민 C</button>
+    <button class="tab-btn" onclick="switchTab('ao','lipoic',this)">🔄 리포산</button>
+    <button class="tab-btn" onclick="switchTab('ao','gluta',this)">👑 글루타치온</button>
+  </div>
+
+  <div id="ao-vitc" class="tab-content active">
+    <div class="card">
+      <div class="card-title"><span class="icon">🍊</span>비타민 C (Ascorbic Acid)</div>
+      <div class="info-box blue"><strong>🧬 특이 사항</strong>4,000만 년 전 유전자 변이로 <strong>인간이 합성할 수 없는</strong> 필수 영양소. 반드시 외부에서 공급 필요.</div>
+      <div style="font-weight:700;color:var(--navy);margin:14px 0 10px;">비타민 C의 10가지 주요 역할</div>
+      <table class="tbl">
+        <thead><tr><th>역할</th><th>효과</th><th>임상 의의</th></tr></thead>
+        <tbody>
+          <tr><td>① 감기</td><td>증상 지속 시간↓</td><td>예방 및 회복 촉진</td></tr>
+          <tr><td>② 상처 치유</td><td>콜라겐 합성↑</td><td>수술 후 회복</td></tr>
+          <tr><td>③ 철 흡수</td><td>Non-heme Fe 생체이용률↑</td><td>빈혈 치료 보조</td></tr>
+          <tr><td>④ 생식기능</td><td>정자 기능, 여성 호르몬 개선</td><td>생식건강 지원</td></tr>
+          <tr><td>⑤ 동맥경화</td><td>혈중 지질↓, 혈관벽 강화</td><td>심혈관 질환 예방</td></tr>
+          <tr><td>⑥ 암</td><td>삶의 질 개선 (고용량 시 세포사멸)</td><td>보조 항암요법</td></tr>
+          <tr><td>⑦ 당뇨병</td><td>내피기능장애 차단, 망막병증 예방</td><td>합병증 예방</td></tr>
+          <tr><td>⑧ 면역력</td><td>NK세포 자극, 항균 작용</td><td>감염 예방/치료</td></tr>
+          <tr><td>⑨ 중금속</td><td>산화 손상 감소</td><td>해독 치료</td></tr>
+          <tr><td>⑩ 신경퇴행</td><td>알츠하이머 등 긍정적 결과</td><td>인지 기능 보호</td></tr>
+        </tbody>
+      </table>
+      <div style="font-weight:700;color:var(--navy);margin:16px 0 10px;">용량에 따른 작용 차이</div>
+      <div class="compare-grid">
+        <div class="info-box teal"><strong>낮은 용량 (10~25g) — 항산화</strong>• ROS (산화스트레스) 제거<br>• 웰빙, 항노화 효과<br>• 면역력 강화<br>• 기초 IVNT</div>
+        <div class="info-box red"><strong>높은 용량 (30~120g) — Pro-oxidant</strong>• 암세포에 선택적 H₂O₂ 축적<br>• 세포사멸 유도 (항암 작용)<br>• TNVC 항암요법</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ao-lipoic" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">🔄</span>리포산 (Alpha-Lipoic Acid)</div>
+      <div class="info-box blue"><strong>"항산화제의 항산화제"</strong>수용성과 지용성 영역 <strong>모두</strong>에서 작용하는 유일한 항산화제</div>
+      <div style="margin-top:12px;">
+        <div class="principle-item"><div class="principle-num" style="background:var(--teal)">①</div><div class="principle-text">미토콘드리아 ETC에서 생산되는 <strong>ROS 직접 제거</strong></div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--teal)">②</div><div class="principle-text">비타민 C, E, 글루타치온 등 <strong>다른 항산화제 재생</strong> → 항산화 순환 강화</div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--teal)">③</div><div class="principle-text">혈뇌장벽 통과 → <strong>중추신경 보호</strong></div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--teal)">④</div><div class="principle-text">인슐린 감수성 향상, 당뇨 합병증 예방</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ao-gluta" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">👑</span>글루타치온 (Glutathione)</div>
+      <div class="info-box purple"><strong>"마스터 항산화제" — 체내 가장 강력한 항산화 시스템</strong>글루탐산 + 시스테인 + 글리신 합성</div>
+      <div style="margin-top:12px;">
+        <div class="principle-item"><div class="principle-num" style="background:var(--purple)">①</div><div class="principle-text"><strong>세포 독성 물질 제거</strong></div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--purple)">②</div><div class="principle-text"><strong>미토콘드리아 기능 보호</strong></div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--purple)">③</div><div class="principle-text">피부 미백 효과 (멜라닌 합성 억제)</div></div>
+        <div class="principle-item"><div class="principle-num" style="background:var(--purple)">④</div><div class="principle-text">간 해독, 중금속 배출 촉진</div></div>
+      </div>
+      <div class="info-box red" style="margin-top:14px;"><strong>⚠️ 투여 필수 주의</strong>글루타치온은 <strong>15분 이내에 전부 투여</strong> 필수 — 산화되면 효과 완전 소실</div>
+    </div>
+  </div>
+</div>
+
+<!-- VITAMINS B -->
+<div id="page-vitamins" class="page">
+  <div class="page-header"><h2>💊 비타민 B군 & 마그네슘</h2><p>에너지·스트레스·통증의 핵심 — "3 B's"</p></div>
+  <div class="info-box blue" style="margin-bottom:16px;"><strong>🔑 3 B's 개념 (에너지·스트레스·통증의 3가지 핵심)</strong>B5 (항스트레스) + B6 (아미노산 대사) + B12 (신경 건강) + 마그네슘 (천연 신경안정제)</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">🟠</span>B5 — 판토텐산 (Pantothenic Acid)</div>
+      <div class="badge badge-orange" style="margin-bottom:10px;">항스트레스 비타민</div>
+      <div class="drug-indication" style="font-size:13px;line-height:1.8;">• CoA 구성성분 → 에너지 생성<br>• 신경전달물질 및 호르몬 합성<br>• 만성피로, 불면증 개선<br>• 부신 피로 개선<br><br><strong>주요 제품:</strong> 지씨비타오주 (B5)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🟡</span>B6 — 피리독신 (Pyridoxine)</div>
+      <div class="badge badge-yellow" style="margin-bottom:10px;">아미노산 대사 핵심</div>
+      <div class="drug-indication" style="font-size:13px;line-height:1.8;">• 아미노산 대사의 핵심 조효소<br>• 비필수 아미노산 자체 합성<br>• 호모시스테인 감소 (B6+B9+B12 함께)<br>• 신경전달물질·세로토닌 촉진<br><br><strong>주요 제품:</strong> 메가비타식스주 (B6)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🔴</span>B12 — 코발라민 ("와인주사")</div>
+      <div class="badge badge-red" style="margin-bottom:10px;">신경 건강 / 붉은 비타민</div>
+      <div class="drug-indication" style="font-size:13px;line-height:1.8;">• 코발트 포함 — 유일한 유기금속 비타민<br>• 신경세포 메틸화 반응 유지<br>• 기억력, 인지 기능 향상<br>• 수초 생성 → 말초신경병증 완화<br>• DNA 손상 복구, 암 예방</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🔵</span>마그네슘 (Magnesium)</div>
+      <div class="badge badge-blue" style="margin-bottom:10px;">천연 신경안정제</div>
+      <div class="drug-indication" style="font-size:13px;line-height:1.8;">• 탄수화물 대사 촉매제<br>• B1, B2, B6의 조효소 (효소 활성 필수)<br>• 요통, 두통, 월경증후군 완화<br>• 혈압 안정화, 인슐린 저항성 개선<br>• 근경련 완화<br><br><strong>주요 제품:</strong> 메가네슘주</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span>비타민 B군 비교표</div>
+    <table class="tbl">
+      <thead><tr><th>성분</th><th>별명</th><th>핵심 역할</th><th>대표 적응증</th><th>주요 제품명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>B1 (티아민)</strong></td><td>에너지 비타민</td><td>에너지 대사</td><td>신경통, 근육통, 관절통</td><td>푸르설타민주</td></tr>
+        <tr><td><strong>B5 (판토텐산)</strong></td><td>항스트레스</td><td>CoA, 부신 기능</td><td>만성피로, 스트레스, 피부염</td><td>지씨비타오주</td></tr>
+        <tr><td><strong>B6 (피리독신)</strong></td><td>아미노산 대사</td><td>신경, 아미노산</td><td>피부염, 신경병증</td><td>메가비타식스주</td></tr>
+        <tr><td><strong>B12 (코발라민)</strong></td><td>와인주사</td><td>수초, 인지 기능</td><td>신경통, 기억력↓</td><td>비타민B12주</td></tr>
+        <tr><td><strong>Mg (마그네슘)</strong></td><td>신경안정제</td><td>근경련 완화, 대사</td><td>근통, 두통, 경련</td><td>메가네슘주</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MYERS -->
+<div id="page-myers" class="page">
+  <div class="page-header"><h2>🧪 Myers' Cocktail</h2><p>IVNT의 기본 황금 조합</p></div>
+  <div class="info-box blue" style="margin-bottom:16px;"><strong>Myers' Cocktail = 3 B's + 마그네슘 + 칼슘 + 비타민C</strong>John Myers 박사가 개발한 IVNT의 기본 처방. 천식, 편두통, 만성피로 등 다양한 만성 증상에 효과적.</div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span>표준 구성 (한국식)</div>
+    <table class="tbl">
+      <thead><tr><th>성분</th><th>용량</th><th>역할</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>마그네슘</strong></td><td>2~3ml</td><td>신경 안정</td><td>요통, 두통 완화</td></tr>
+        <tr><td><strong>B5 (판토텐산)</strong></td><td>500mg</td><td>항스트레스</td><td>피로 회복</td></tr>
+        <tr><td><strong>B6 (피리독신)</strong></td><td>50mg</td><td>아미노산 대사</td><td>신경 기능 개선</td></tr>
+        <tr><td><strong>B12 (와인주사)</strong></td><td>5mg</td><td>신경 건강</td><td>인지 기능↑</td></tr>
+        <tr><td><strong>비타민 C</strong></td><td>10g</td><td>항산화</td><td>면역력 강화</td></tr>
+        <tr><td><strong>칼슘 (글루콘산)</strong></td><td>적정량</td><td>근신경 기능</td><td>근경련 예방</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box teal" style="margin-top:12px;"><strong>💉 투여 속도: 120~150 GTT/분</strong></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span>주요 적응증</div>
+    <div class="grid-2">
+      <div>
+        <div style="font-weight:700;font-size:12px;color:var(--gray);margin-bottom:8px;">급성 적응증</div>
+        <ul class="checklist">
+          <li><span class="check-icon">✅</span>천식 발작</li>
+          <li><span class="check-icon">✅</span>급성 편두통</li>
+          <li><span class="check-icon">✅</span>우울증 급성기</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:12px;color:var(--gray);margin-bottom:8px;">만성 적응증</div>
+        <ul class="checklist">
+          <li><span class="check-icon">✅</span>만성 피로 / 근육통</li>
+          <li><span class="check-icon">✅</span>심부전, 협심증</li>
+          <li><span class="check-icon">✅</span>섬유근통</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">💰</span>메가비타민 처방 예시</div>
+    <table class="tbl">
+      <thead><tr><th>제품명</th><th>비타민C</th><th>기초액</th><th>추가성분</th><th>예시가격</th></tr></thead>
+      <tbody>
+        <tr><td>Mega 10</td><td>10g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>40,000원</td></tr>
+        <tr><td>Mega 20</td><td>20g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>45,000원</td></tr>
+        <tr style="background:#fffbf0;"><td><strong>Mega 30</strong></td><td><strong>30g</strong></td><td><strong>증류액 500ml ⚠️</strong></td><td><strong>B, Mg, Ca</strong></td><td><strong>50,000원</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="info-box yellow" style="margin-top:10px;"><strong>💡 Tip</strong>비타민C 10g = 20ml / 용량 증가 시 수액량을 동량 감소시켜 총 부피 일정하게 유지</div>
+  </div>
+</div>
+
+<!-- HIGH DOSE IVC -->
+<div id="page-highdose" class="page">
+  <div class="page-header"><h2>🎯 고용량 IVC 항암요법</h2><p>TNVC (Tumor Necrotic Vitamin C)</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">⚗️</span>비타민 C의 역설</div>
+    <div class="compare-grid">
+      <div class="info-box teal"><strong>항산화 용량 (10~25g)</strong>• ROS 제거 → 산화스트레스 감소<br>• 항노화, 웰빙 효과<br>• 면역력 강화<br>• 일반 IVNT에 사용</div>
+      <div class="info-box red"><strong>Pro-oxidant 용량 (30~120g)</strong>• 산화스트레스 증가<br>• 암세포 선택적 살상<br>• TNVC 항암요법<br>• 암환자 적용</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">🔬</span>항암 메커니즘 — 왜 암세포만 죽일까?</div>
+    <div class="flow">
+      <div class="flow-box">암세포<br>GLUT 과발현</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">비타민C를<br>포도당으로 오인</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">암세포 내<br>선택적 축적</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">H₂O₂<br>과다 생성</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:var(--light-red);border-color:#e74c3c;color:var(--red);">미토콘드리아 손상<br>→ 암세포 사멸</div>
+    </div>
+    <div class="info-box blue" style="margin-top:12px;"><strong>정상세포는 왜 안전한가?</strong>정상세포 → 카탈라아제(Catalase) 효소 충분 → H₂O₂를 H₂O로 분해 → 손상 없음<br>암세포 → 카탈라아제 결핍 → 선택적 사멸</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span>고용량 IVC 투여 지침</div>
+    <table class="tbl">
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>투여 속도</td><td>120~150 GTT/분</td></tr>
+        <tr><td>비타민C 10g =</td><td>20ml</td></tr>
+        <tr><td>30g 이상 기초액</td><td><strong>증류액 500ml 필수</strong> (Na-ascorbic acid 제형)</td></tr>
+        <tr><td>당뇨/암 환자</td><td>포도당(DW) 사용 금지 → <strong>N/S</strong></td></tr>
+        <tr><td>금지 조합</td><td>탄산수소나트륨 + 글루콘산칼슘 동시 투여 금지</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FLUID -->
+<div id="page-fluid" class="page">
+  <div class="page-header"><h2>💧 수액 선택 가이드</h2><p>상황별 올바른 기초수액 선택</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span>기초수액 선택 기준표</div>
+    <table class="tbl">
+      <thead><tr><th>상황</th><th>선택 수액</th><th>이유</th><th>주의사항</th></tr></thead>
+      <tbody>
+        <tr><td>비타민C 10g</td><td><span class="badge badge-blue">N/S 100ml</span></td><td>삼투압 1,200mOsm 이하 유지</td><td>통증 없음</td></tr>
+        <tr><td>비타민C 20g</td><td><span class="badge badge-blue">N/S 200~250ml</span></td><td>삼투압 조절</td><td>통증 없음</td></tr>
+        <tr><td>비타민C 30g 이상</td><td><span class="badge badge-red">증류액 500ml ⚠️</span></td><td>Na-ascorbic acid 제형 필요</td><td>필수 사항</td></tr>
+        <tr><td>당뇨 환자</td><td><span class="badge badge-teal">N/S</span></td><td>혈당 조절 필요</td><td>DW 절대 금지</td></tr>
+        <tr><td>암 환자</td><td><span class="badge badge-teal">N/S</span></td><td>암세포 포도당 이용 차단</td><td>DW 절대 금지</td></tr>
+        <tr><td>일반 탈수/장염</td><td><span class="badge badge-yellow">5%DW or N/S</span></td><td>전해질/수분 보충</td><td>상황에 따라 선택</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">⚗️</span>삼투압 원칙</div>
+    <div class="info-box yellow"><strong>💡 고농도 비타민C 투여 시</strong>비타민C 고농도 → 삼투압↑ → 혈관통증·용혈 가능<br>→ 수액량을 충분히 늘려 삼투압 1,200mOsm 이하 유지<br>→ 30g 이상: 반드시 증류액(Distilled Water) 500ml 사용</div>
+    <div class="info-box blue" style="margin-top:8px;"><strong>📐 계산 팁</strong>비타민C 10g = 20ml / 용량 증가 시 수액량 동량 감소하여 총 부피 일정 유지</div>
+  </div>
+</div>
+
+<!-- RX: GASTRO -->
+<div id="page-rx-gastro" class="page">
+  <div class="page-header"><h2>🤢 장염/소화기 처방</h2><p>구역·구토·복통·설사·발열 동반 장염</p></div>
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div class="drug-card"><div class="drug-name">5% 포도당주사 (5%DW)</div><div class="drug-dose">500ml</div><div class="drug-indication">식약처 비급여 등재 / 장염·설사로 인한 탈수 치료</div></div>
+    <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">해열·진통·소염제 / 발열·오한·통증 완화</div></div>
+    <div class="drug-card"><div class="drug-name">뉴트리헥스주</div><div class="drug-dose">1 vial</div><div class="drug-indication">경구섭취 감소·저영양 상태 치료 / 복합 비타민·미네랄</div></div>
+  </div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 장염 소견서 (표준형)</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">수액요법</span></div>
+      <button class="copy-btn" onclick="copyRx('rx1')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx1">상기환자는 구역, 구토, 복통, 설사, 발열을 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+[법정비급여 주사제 식약처 허가사항 및 치료 소견]
+
+1. 5%포도당주사: 식약처에 정식으로 비급여로 등재된 주사제로 장염, 설사 등으로 인한 탈수 치료를 목적으로 투여함.
+
+2. 아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+3. 뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+  </div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 용종절제 후 처방 (당일)</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
+      <button class="copy-btn" onclick="copyRx('rx2')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx2">상기환자는 구역, 구토, 복통, 설사를 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+  </div>
+</div>
+
+<!-- RX: COLD -->
+<div id="page-rx-cold" class="page">
+  <div class="page-header"><h2>🤧 감기/독감 처방</h2><p>급성기관지염 · 인플루엔자</p></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('cold','cold-general',this)">일반 감기</button>
+    <button class="tab-btn" onclick="switchTab('cold','cold-flu',this)">독감 (인플루엔자)</button>
+  </div>
+  <div id="cold-cold-general" class="tab-content active">
+    <div class="grid-2" style="margin-bottom:14px;">
+      <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">해열·진통·소염 / 발열·오한·통증 완화</div></div>
+      <div class="drug-card"><div class="drug-name">지씨엔에이씨주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">급·만성 기관지염, 인후두염, 부비동염 / 기침·객담 제거 / 진해거담제</div></div>
+      <div class="drug-card"><div class="drug-name">뉴트리헥스주</div><div class="drug-dose">1 vial</div><div class="drug-indication">경구섭취 감소로 인한 저영양상태 치료</div></div>
+    </div>
+    <div class="rx-card">
+      <div class="rx-header">
+        <div class="rx-title">📄 감기/상기도 감염 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
+        <button class="copy-btn" onclick="copyRx('rx3')">📋 복사</button>
+      </div>
+      <div class="rx-body" id="rx3">상기 환자는 급성기관지염과 동반된 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 전신의 근통, 통증 증상으로 급성 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+지씨엔에이씨주: 식약처로부터 급/만성 기관지염, 인후두염, 부비동염 등에 효능효과를 허가받은 진해거담제로 기침, 객담제거, 급성기관지염 완화를 위해 투여함.
+
+뉴트리헥스주: 감기몸살로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    </div>
+  </div>
+  <div id="cold-cold-flu" class="tab-content">
+    <div class="grid-2" style="margin-bottom:14px;">
+      <div class="drug-card"><div class="drug-name">페라미플루주</div><div class="drug-dose">300mg / vial · 15분 IV</div><div class="drug-indication">A형·B형 인플루엔자 / 인정비급여 / 성인 및 2세 이상 소아</div></div>
+      <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">해열·진통·소염</div></div>
+      <div class="drug-card"><div class="drug-name">뉴트리헥스주</div><div class="drug-dose">1 vial</div><div class="drug-indication">독감으로 인한 저영양상태 치료</div></div>
+    </div>
+    <div class="rx-card">
+      <div class="rx-header">
+        <div class="rx-title">📄 인플루엔자 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">인정비급여</span></div>
+        <button class="copy-btn" onclick="copyRx('rx4')">📋 복사</button>
+      </div>
+      <div class="rx-body" id="rx4">상기 환자는 인플루엔자 양성소견으로 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 통증 증상으로 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+페라미플루주: 성인 및 2세이상의 소아의 A형 B형 인플루엔자 바이러스감염증의 신속투여의 식약처 허가사항의 인정비급여제로 인플루엔자 확진 환자의 치료목적으로 사용.
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+뉴트리헥스주: 독감으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RX: HERPES -->
+<div id="page-rx-herpes" class="page">
+  <div class="page-header"><h2>🔴 대상포진 처방</h2><p>바이러스성 피부질환 + 신경통</p></div>
+  <div class="grid-2" style="margin-bottom:14px;">
+    <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">해열·진통·소염 / 대상포진 통증 완화</div></div>
+    <div class="drug-card"><div class="drug-name">히시파겐씨주 (히씨파겐씨)</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환·헤르페스·대상포진 / 바이러스성 피부질환</div></div>
+    <div class="drug-card"><div class="drug-name">푸르설타민주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B1 결핍·대사장애 "추정" 시 / 신경통·근육통·관절통 치료</div></div>
+  </div>
+  <div class="info-box yellow" style="margin-bottom:14px;"><strong>⚖️ 푸르설타민주 처방 근거</strong>식약처 효능효과: 결핍 수치 없어도 증상 및 이학적검사로 <strong>"추정"</strong>되는 경우 의사 판단으로 처방 가능<br>(의료법 17조 1항: 직접 진찰한 의사의 고유 처방 권한)</div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 대상포진 소견서</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-red">신경통</span></div>
+      <button class="copy-btn" onclick="copyRx('rx5')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx5">상기 환자는 등/허리/옆구리의 대상포진이 발병하여 해당병변에 알레르기성 두드러기가 동반된 피부염과 대상포진 신경통을 주소로 내원하였음. 약물 치료와 연고치료에도 신경통 및 가려움 동반한 피부증상 호전 없음.
+또한 구강근처 헤르페스 피부염이 동반되어 경구로 삼킴이 힘들고 식욕부진이 동반되어 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
+상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
+
+-아래-
+[법정비급여 주사제별 식약처 적응증 및 치료소견]
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 대상포진으로 인한 통증 완화 목적으로 투여함.
+
+히시파겐씨주: 두드러기, 습진, 알러지성 피부질환 헤르페스, 대상포진 등 식약처로부터 각종피부염에 효능효과가 있는 것으로 허가받은 주사제로 바이러스성 피부질환 완화에 효과.
+
+푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
+푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.</div>
+  </div>
+</div>
+
+<!-- RX: SKIN -->
+<div id="page-rx-skin" class="page">
+  <div class="page-header"><h2>🌿 피부염/두드러기 처방</h2><p>알레르기성 피부질환 · 습진 · 두드러기</p></div>
+  <div class="grid-2" style="margin-bottom:14px;">
+    <div class="drug-card"><div class="drug-name">히시파겐씨주 (히씨파겐씨)</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환 / 식약처 허가 피부질환</div></div>
+    <div class="drug-card"><div class="drug-name">메가비타식스주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B6 결핍·대사장애 "추정" 시 / 급·만성 습진, 지루성 습진, 접촉피부염</div></div>
+    <div class="drug-card"><div class="drug-name">지씨비타오주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B5 결핍·대사장애 "추정" 시 / 급·만성 습진, 접촉피부염</div></div>
+  </div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 피부염/두드러기 소견서</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-purple">피부질환</span></div>
+      <button class="copy-btn" onclick="copyRx('rx6')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx6">상기 환자는 설염/알러지성 피부염 및 심한 두드러기 증상으로 지속적인 약물복용 하였으나 일시적 호전 후에 다시 악화되는 증상 보여 일상생활에 불편과 어려움을 호소함. 상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
+
+-아래-
+[법정(인정)비급여 주사제별 식약처 허가사항 및 치료소견]
+
+히씨파겐씨주: 식약처로부터 두드러기, 습진, 알레르기성 피부질환 등 각종 피부질환 치료에 효능효과를 허가받은 주사제로 피부질환 완화를 위해 투여함.
+
+메가비타식스주: 환자의 주된 증상(접촉피부염, 습진 등의 피부질환)과 여러 상태를 문진(이학적 검사)한 결과 기능의학적으로 볼때 비타민B6의 결핍 또는 대사장애가 관여한다고 추정되어 피부질환 완화를 위해 식약처로부터 비타민B6의 결핍 또는 대사장애가 관여한다고 추정되는 경우 급만성습진, 지루성 습진, 접촉피부염 등 각종 피부질환 치료에 효능효과를 허가받은 메가비타식스주를 투여함.
+
+지씨비타오주: 식약처로부터 판토텐산(비타민B5)의 결핍 또는 대사장애가 관여한다고 추정되는 경우 급만성습진, 접촉피부염 등 피부질환 치료에 효능효과를 허가받은 지씨비타오주를 투여함.
+위 약제들은 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적 검사)한 결과 의학적으로 추정되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 의료법17조1항에 따라 환자를 직접진찰한 의사(주치의)의 고유권한임.</div>
+  </div>
+</div>
+
+<!-- RX: CERVICAL -->
+<div id="page-rx-cervical" class="page">
+  <div class="page-header"><h2>🦴 경추통/어지러움/신경통 처방</h2><p>경추성두통 · 신경통 · 근경련 · 손발저림 · 혈액순환장애</p></div>
+  <div class="grid-2" style="margin-bottom:14px;">
+    <div class="drug-card"><div class="drug-name">지씨징코주</div><div class="drug-dose">5ml × 1~2 ample</div><div class="drug-indication">두통·어지럼·말초동맥순환장애(혈액순환장애) / 체중·증상 고려하여 용량 조절</div></div>
+    <div class="drug-card"><div class="drug-name">메가네슘주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">경련·자간·전해질 보급 / 근경련·통증 완화 / 결핍수치 없어도 처방 가능</div></div>
+    <div class="drug-card"><div class="drug-name">푸르설타민주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B1 결핍·대사장애 "추정" 시 / 신경통·근육통·관절통</div></div>
+    <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">통증·발열 완화 (필요 시 추가)</div></div>
+  </div>
+  <div class="info-box blue" style="margin-bottom:14px;"><strong>📌 지씨징코주 용량 기준</strong>체중 및 증상 고려하여 5ml × 1~2 ample 투약 — 증상이 심할수록 2 ample 적용</div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 경추통/순환장애/신경통 소견서</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-orange">신경통</span></div>
+      <button class="copy-btn" onclick="copyRx('rx7')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx7">상기 환자는 경추성두통, 그로 인한 양측 어깨 신경통과 근경련증상, 손발저림과 수족냉증 현상, 어지러움과 그로 인한 구역감을 호소로 내원함.
+약물치료에도 호전 없으며 해당 증상들로 인해 일상생활의 제약 및 경구식이의 감소 등의 소모성질환도 함께 의심됨. 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+지씨징코주: 두통, 어지럼, 말초동맥순환장애(혈액순환장애) 등에 효능효과가 있는 것으로 식약처로부터 허가받은 주사제로 말초동맥순환장애(혈액순환장애) 완화를 위해 투여함.
+(체중 및 증상 고려하여 5ML × 2Ample 투약함)
+
+메가네슘주: 식약처로부터 경련, 자간, 자궁경직방지, 전해질의보급 등에 효능효과를 허가받은 마그네슘제제로 식약처 효능효과에 따라 근경련 및 통증 완화를 위해 투여함. 메가네슘주사는 식약처 효능효과 상 마그네슘의 결핍 수치가 있을 경우에만 처방가능한 약제가 아님.
+
+푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
+푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.</div>
+  </div>
+</div>
+
+<!-- RX: LIVER -->
+<div id="page-rx-liver" class="page">
+  <div class="page-header"><h2>🫀 간기능 처방</h2><p>간수치 상승 · 간기능 개선</p></div>
+  <div class="grid-2" style="margin-bottom:14px;">
+    <div class="drug-card"><div class="drug-name">히시파겐씨주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">간질환 간기능 개선 / 간세포 자멸 억제·재생 촉진</div></div>
+    <div class="drug-card"><div class="drug-name">라이넥주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">간기능 개선 / 태반 추출 성분 / 간 피로 완화·기능 개선</div></div>
+  </div>
+  <div class="info-box yellow" style="margin-bottom:14px;"><strong>📋 혈액검사 결과 기재 필요</strong>검사 시행일: 20  /  /  &nbsp;&nbsp;&nbsp; AST / ALT / GGT : (  /  /  )</div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 간기능 개선 소견서</div>
+      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">간질환</span></div>
+      <button class="copy-btn" onclick="copyRx('rx8')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx8">* 혈액검사 시행일 20  /  /
+: AST/ALT/GGT (  /  /  )
+
+상기 환자는 경구 섭취 감소, 소화불량, 복통으로 내원하였고 간기능검사 결과 간수치 상승이 확인됨.
+간기능 개선을 위해 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+[법정비급여 주사제 식약처 허가사항 및 치료 소견]
+
+히시파겐씨주 및 라이넥주: 식약처로부터 간질환의 간기능 개선 치료에 효능효과를 허가받은 주사제들로 간세포의 자멸을 억제하고, 간세포의 재생을 촉진함으로써 간의 피로 완화 및 간 기능 개선 치료에 효과적임.</div>
+  </div>
+</div>
+
+<!-- RX: IMMUNE -->
+<div id="page-rx-immune" class="page">
+  <div class="page-header"><h2>🛡️ 면역증강 — 싸이모신 알파</h2><p>Thymosin Alpha-1 면역증강요법</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">🔬</span>싸이모신 알파 (Thymosin Alpha-1) 기전</div>
+    <div class="info-box purple"><strong>이뮨알파원 (지씨웰빙이뮨알파원) — 싸이모신알파 주사</strong>인체 내 흉선성분 thymosin alpha-1을 반복적으로 <strong>피하주사</strong>. 70여개 이상의 임상 시행, 효과 입증.</div>
+    <div style="margin-top:14px;">
+      <div class="principle-item"><div class="principle-num" style="background:var(--purple)">①</div><div class="principle-text"><strong>NK cell, Cytotoxic T Cell 분비</strong> → 암세포 공격 유도</div></div>
+      <div class="principle-item"><div class="principle-num" style="background:var(--purple)">②</div><div class="principle-text"><strong>T helper cell 촉진</strong> → B cell·T cell 면역반응 총괄 → 더 많은 공격세포·항체 생성</div></div>
+      <div class="principle-item"><div class="principle-num" style="background:var(--purple)">③</div><div class="principle-text"><strong>수지상세포, CD8 세포독성 T세포 활성도 증가</strong></div></div>
+      <div class="principle-item"><div class="principle-num" style="background:var(--purple)">④</div><div class="principle-text">NK cell activity 증가 (Cytotoxicity 대조군 대비 유의하게 높음)</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span>약제 분류 및 허가</div>
+    <table class="tbl">
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>제품명</td><td>지씨웰빙이뮨알파원주 (Thymosin-alpha-1)</td></tr>
+        <tr><td>투여 방법</td><td><strong>피하주사 (SC)</strong> — 반복 투여</td></tr>
+        <tr><td>보건복지부 분류</td><td>분류번호 429 — <strong>기타의 종양치료제</strong></td></tr>
+        <tr><td>식약처 등재</td><td>"종양용약" = <strong>항암제</strong> 분류</td></tr>
+        <tr><td>주요 적응 대상</td><td>암 수술 후 면역력 저하 환자, 면역 보조 치료 필요 환자</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 싸이모신 알파 소견서</div>
+      <div class="rx-badges"><span class="badge badge-purple">항암보조</span></div>
+      <button class="copy-btn" onclick="copyRx('rx9')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx9">상기환자 20   년 [수술명: 예) 좌측 갑상선 반절제술 및 림프절 곽청술] 시행받은 분으로
+
+이뮨알파원(싸이모신알파) 주사요법은 인체 내 흉선성분의 일종인 thymosin alpha-1을 반복적으로 피하주사하여 수지상세포, helper T세포, NK세포, CD8 세포독성 T세포의 활성도 증가를 유도하는 면역증강요법입니다. thymosin alpha-1은 현재까지 총 70여개 이상의 임상이 시행되었으며, 그 효과가 입증된 제품입니다.
+
+Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 항원 또는 암세포에 대한 직접적인 작용, 이 두 가지 작용을 합니다.
+
+1. 대표적인 암세포를 공격하는 면역세포인 NK cell, Cytotoxic T Cell을 분비시켜 암세포를 공격할 수 있도록 유도합니다.
+
+2. B cell과 T cell의 면역반응을 지휘 총괄하는 T helper cell을 촉진시켜 더 많은 공격세포들과 항체를 생성하게 됩니다.
+
+이상 본원에서 실시한 지씨웰빙이뮨알파원(싸이모신알파) 주사는 상기기전과 이론을 바탕으로 실시되고 있는 암세포 사멸을 목적으로 한 항암치료임을 분명히 밝힙니다.
+
+지씨웰빙이뮨알파원주(=Thymosin-alpha-1): 보건복지부 약제 분류상 "분류번호:429.-기타의 종양치료제"로 식약처에 등재된 주사제로 ("기타의 종양치료제"는 보건복지부 약제 분류상 "종양용약"으로 "항암제"로 분류됨.)</div>
+  </div>
+</div>
+
+<!-- OPINION -->
+<div id="page-opinion" class="page">
+  <div class="page-header"><h2>📄 소견서 원칙 & 법적 근거</h2><p>실손보험 청구 대비 소견서 작성 원칙</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📌</span>수액 소견서 작성 원칙</div>
+    <div class="principle-item"><div class="principle-num">1</div><div class="principle-text"><strong>진단명</strong> — 글자크기 10으로 잘리지 않는지 확인</div></div>
+    <div class="principle-item"><div class="principle-num">2</div><div class="principle-text"><strong>진단일</strong> 확인 필수</div></div>
+    <div class="principle-item"><div class="principle-num">3</div><div class="principle-text">매주 맞는 경우 — <strong>진료확인서 함께 발급</strong></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">⚖️</span>처방 법적 근거</div>
+    <div class="info-box blue"><strong>의료법 17조 1항</strong>진단 및 처방은 환자를 <strong>직접 진찰한 의사(주치의)만</strong> 할 수 있음. 의학적 견해에 따른 진단 및 질병치료를 위한 처방은 주치의의 고유 권한.</div>
+    <div class="info-box teal"><strong>비타민/미네랄 "추정" 처방 근거</strong>식약처 효능효과 상 "결핍 수치가 있을 경우에만" 처방 가능한 약제가 아님. 환자의 증상과 이학적 검사로 결핍·대사장애가 <strong>"추정"</strong>되는 경우 의사 판단으로 처방 가능.<br>(푸르설타민, 메가비타식스, 지씨비타오, 메가네슘 등 모두 해당)</div>
+  </div>
+  <div class="rx-card">
+    <div class="rx-header">
+      <div class="rx-title">📄 수액요법 간단 소견 (범용)</div>
+      <button class="copy-btn" onclick="copyRx('rx10')">📋 복사</button>
+    </div>
+    <div class="rx-body" id="rx10">상기도감염 증상을 동반한 몸살기운으로 내원하신 분으로
+어지러움 증상 및 탈수증상 동반되어 수액요법 하였습니다.
+구역, 구토 및 경구섭취감소 동반되어 수액요법 하였습니다.
+경과관찰 예정에 있습니다.</div>
+  </div>
+</div>
+
+<!-- DRUGS -->
+<div id="page-drugs" class="page">
+  <div class="page-header"><h2>💉 약물 전체 목록</h2><p>IVNT 처방 약물 식약처 허가 근거 요약</p></div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span>주요 약물 처방 근거 요약표</div>
+    <table class="tbl">
+      <thead><tr><th>약물명</th><th>분류</th><th>식약처 허가 효능효과</th><th>처방 포인트</th></tr></thead>
+      <tbody>
+        <tr><td><strong>아세트펜프리믹스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>해열/진통/소염제</td><td>발열·통증 모든 상황 적용</td></tr>
+        <tr><td><strong>뉴트리헥스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>복합 비타민·미네랄</td><td>저영양상태, 경구섭취 감소</td></tr>
+        <tr><td><strong>5%포도당주사</strong></td><td><span class="badge badge-blue">비급여</span></td><td>탈수·전해질 보충</td><td>탈수, 장염, 일반 수액</td></tr>
+        <tr><td><strong>지씨엔에이씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>급·만성 기관지염, 부비동염</td><td>기침·객담 있는 상기도 감염</td></tr>
+        <tr><td><strong>페라미플루주</strong></td><td><span class="badge badge-teal">인정비급여</span></td><td>A·B형 인플루엔자</td><td>독감 확진 시 신속 투여 (15분 IV)</td></tr>
+        <tr><td><strong>히시파겐씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두드러기·습진·피부질환·간기능</td><td>피부질환 + 간기능 겸용 가능</td></tr>
+        <tr><td><strong>푸르설타민주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B1 결핍·대사장애 추정 시 신경통</td><td>"추정" 처방 — 결핍 수치 불필요</td></tr>
+        <tr><td><strong>메가비타식스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B6 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
+        <tr><td><strong>지씨비타오주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B5 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
+        <tr><td><strong>메가네슘주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>경련·자간·전해질 보급</td><td>결핍 수치 없어도 처방 가능</td></tr>
+        <tr><td><strong>지씨징코주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두통·어지럼·말초순환장애</td><td>혈액순환 + 어지럼에 사용</td></tr>
+        <tr><td><strong>라이넥주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>간질환 간기능 개선</td><td>간수치 상승 시 히시파겐씨와 병용</td></tr>
+        <tr><td><strong>이뮨알파원주</strong></td><td><span class="badge badge-purple">종양치료제</span></td><td>기타 종양치료제 (항암제 분류)</td><td>암 환자 면역증강, 피하주사</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+function switchTab(group, tabId, btn) {
+  document.querySelectorAll('[id^="' + group + '-"]').forEach(c => c.classList.remove('active'));
+  const target = document.getElementById(group + '-' + tabId);
+  if (target) target.classList.add('active');
+  if (btn) {
+    const bar = btn.closest('.tab-bar');
+    if (bar) bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function copyRx(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text = el.innerText;
+  const btn = event.currentTarget;
+  const orig = btn.innerHTML;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.innerHTML = '✅ 복사됨!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.innerHTML = '✅ 복사됨!';
+    setTimeout(() => { btn.innerHTML = orig; }, 2200);
+  }
+}
+</script>
+</body>
+</html>
