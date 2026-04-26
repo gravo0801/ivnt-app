@@ -2,7 +2,9 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>IVNT 학습 앱 — 정맥영양요법 가이드</title>
 <style>
 :root {
@@ -26,33 +28,161 @@
   --border: #d5d8dc;
   --white: #ffffff;
   --shadow: 0 2px 12px rgba(15,43,78,0.10);
+  --sidebar-width: 224px;
+  --header-h: 56px;
+  --bottom-nav-h: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1a1a2e; display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
+body {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  background: #f0f4f8;
+  color: #1a1a2e;
+  font-size: 14px;
+  overflow-x: hidden;
+}
+
+/* ====== DESKTOP LAYOUT ====== */
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
 
 /* Sidebar */
-.sidebar { width: 224px; background: var(--navy); color: #fff; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
-.sidebar-logo { padding: 22px 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  z-index: 200;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.sidebar-logo {
+  padding: 22px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 .sidebar-logo h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
 .sidebar-logo p { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
 .nav-section { padding: 12px 0 4px; }
-.nav-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: rgba(255,255,255,0.35); padding: 0 16px 6px; text-transform: uppercase; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; font-size: 13px; color: rgba(255,255,255,0.72); }
+.nav-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.35); padding: 0 16px 6px; text-transform: uppercase;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.15s; font-size: 13px;
+  color: rgba(255,255,255,0.72);
+  -webkit-tap-highlight-color: transparent;
+  min-height: 40px;
+}
 .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
-.nav-item.active { background: rgba(46,134,193,0.22); border-left-color: #2e86c1; color: #fff; font-weight: 600; }
+.nav-item.active {
+  background: rgba(46,134,193,0.22);
+  border-left-color: #2e86c1; color: #fff; font-weight: 600;
+}
 .nav-icon { width: 18px; text-align: center; font-size: 14px; }
+.version-tag { font-size: 10px; color: rgba(255,255,255,0.3); padding: 12px 16px; margin-top: auto; }
 
-/* Main */
-.main { flex: 1; overflow-y: auto; }
+/* Main content */
+.main { flex: 1; overflow-y: auto; overflow-x: hidden; }
 .page { display: none; padding: 26px; max-width: 980px; }
 .page.active { display: block; }
 .page-header { margin-bottom: 22px; }
 .page-header h2 { font-size: 22px; font-weight: 800; color: var(--navy); }
 .page-header p { color: var(--gray); margin-top: 4px; font-size: 13px; }
 
-/* Cards */
-.card { background: var(--white); border-radius: 12px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px; }
-.card-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+/* ====== MOBILE HEADER ====== */
+.mobile-header {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--navy);
+  color: #fff;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  z-index: 300;
+  padding-top: var(--safe-top);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.mobile-header-title {
+  font-size: 16px; font-weight: 800; flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hamburger-btn {
+  background: none; border: none; color: #fff; cursor: pointer;
+  padding: 8px; border-radius: 8px;
+  display: flex; flex-direction: column; gap: 5px;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger-btn span {
+  display: block; width: 22px; height: 2px;
+  background: #fff; border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Sidebar overlay backdrop */
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 190;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sidebar-backdrop.active { opacity: 1; }
+
+/* ====== BOTTOM NAV (mobile) ====== */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  z-index: 300;
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+}
+.bottom-nav-inner {
+  display: flex;
+  height: var(--bottom-nav-h);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.bottom-nav-inner::-webkit-scrollbar { display: none; }
+.bottom-nav-item {
+  flex: 1; min-width: 60px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 3px;
+  cursor: pointer; padding: 8px 4px;
+  color: var(--gray); font-size: 10px; font-weight: 600;
+  border: none; background: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+.bottom-nav-item .bn-icon { font-size: 20px; line-height: 1; }
+.bottom-nav-item.active { color: var(--accent); }
+.bottom-nav-item.active .bn-icon { transform: scale(1.1); }
+
+/* ====== CARDS ====== */
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 20px; margin-bottom: 16px;
+}
+.card-title {
+  font-size: 15px; font-weight: 700; color: var(--navy);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
 .card-title .icon { font-size: 18px; }
 
 /* Grid */
@@ -69,7 +199,10 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 .badge-purple { background: var(--light-purple); color: var(--purple); }
 
 /* Info boxes */
-.info-box { border-radius: 8px; padding: 12px 16px; margin: 10px 0; font-size: 13px; line-height: 1.7; }
+.info-box {
+  border-radius: 8px; padding: 12px 16px; margin: 10px 0;
+  font-size: 13px; line-height: 1.7;
+}
 .info-box.blue { background: var(--light-blue); border-left: 4px solid var(--accent); }
 .info-box.teal { background: var(--light-teal); border-left: 4px solid var(--teal); }
 .info-box.orange { background: var(--light-orange); border-left: 4px solid var(--orange); }
@@ -78,48 +211,100 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 .info-box.purple { background: var(--light-purple); border-left: 4px solid var(--purple); }
 .info-box strong { display: block; margin-bottom: 4px; font-size: 13px; }
 
-/* Table */
-.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-.tbl th { background: var(--navy); color: #fff; padding: 10px 13px; text-align: left; font-weight: 600; }
+/* Table wrapper — horizontal scroll on mobile */
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+.tbl th {
+  background: var(--navy); color: #fff;
+  padding: 10px 13px; text-align: left; font-weight: 600; white-space: nowrap;
+}
 .tbl td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
 .tbl tr:hover td { background: #f8fbff; }
 .tbl tr:last-child td { border-bottom: none; }
 
 /* Drug card */
-.drug-card { background: #f8fbff; border-radius: 10px; border: 1px solid #c8dff0; padding: 14px 16px; margin-bottom: 10px; }
+.drug-card {
+  background: #f8fbff; border-radius: 10px; border: 1px solid #c8dff0;
+  padding: 14px 16px; margin-bottom: 10px;
+}
 .drug-name { font-size: 14px; font-weight: 700; color: var(--navy); }
 .drug-dose { font-size: 12px; color: var(--accent); font-weight: 600; margin: 3px 0; }
 .drug-indication { font-size: 12px; color: var(--gray); line-height: 1.6; margin-top: 5px; }
 
-/* Prescription template */
-.rx-card { background: var(--white); border: 2px solid var(--accent); border-radius: 12px; padding: 18px; margin-bottom: 18px; }
-.rx-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap; }
+/* Prescription card */
+.rx-card {
+  background: var(--white);
+  border: 2px solid var(--accent);
+  border-radius: 12px; padding: 18px; margin-bottom: 18px;
+}
+.rx-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;
+}
 .rx-title { font-size: 15px; font-weight: 700; color: var(--blue); }
 .rx-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-.rx-body { background: #f5f8ff; border-radius: 8px; padding: 14px 16px; font-size: 12.5px; line-height: 1.9; white-space: pre-line; color: #2c3e50; border: 1px solid #dce8f5; margin-top: 12px; }
-.copy-btn { background: var(--accent); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+.rx-body {
+  background: #f5f8ff; border-radius: 8px; padding: 14px 16px;
+  font-size: 12.5px; line-height: 1.9; white-space: pre-line;
+  color: #2c3e50; border: 1px solid #dce8f5; margin-top: 12px;
+  max-height: 300px; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.copy-btn {
+  background: var(--accent); color: #fff; border: none;
+  padding: 8px 16px; border-radius: 8px; font-size: 12px;
+  cursor: pointer; font-weight: 600; white-space: nowrap; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 36px;
+}
 .copy-btn:hover { background: var(--blue); }
+.copy-btn:active { transform: scale(0.96); }
 .copy-btn.copied { background: var(--teal); }
 
-/* Principles list */
-.principle-item { display: flex; gap: 13px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+/* Principles */
+.principle-item {
+  display: flex; gap: 13px; padding: 10px 0;
+  border-bottom: 1px solid var(--border); align-items: flex-start;
+}
 .principle-item:last-child { border-bottom: none; }
-.principle-num { width: 28px; height: 28px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.principle-num {
+  width: 28px; height: 28px; background: var(--accent); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 1px;
+}
 .principle-text { font-size: 13px; line-height: 1.7; color: #2c3e50; }
 
 /* Flow diagram */
 .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
-.flow-box { background: var(--light-blue); border: 1px solid #aed6f1; border-radius: 8px; padding: 8px 13px; font-size: 12px; font-weight: 600; color: var(--blue); text-align: center; }
+.flow-box {
+  background: var(--light-blue); border: 1px solid #aed6f1;
+  border-radius: 8px; padding: 8px 13px; font-size: 12px;
+  font-weight: 600; color: var(--blue); text-align: center;
+}
 .flow-arrow { color: var(--gray); font-size: 18px; }
 
 /* Pyramid */
 .pyramid-wrap { max-width: 340px; margin: 12px auto; }
 .pyramid-row { text-align: center; margin: 3px 0; }
-.pyramid-box { display: inline-block; padding: 10px 0; color: #fff; font-size: 12px; font-weight: 600; border-radius: 6px; }
+.pyramid-box {
+  display: inline-block; padding: 10px 0; color: #fff;
+  font-size: 12px; font-weight: 600; border-radius: 6px;
+}
 
 /* Tabs */
-.tab-bar { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 2px solid var(--border); }
-.tab-btn { padding: 8px 18px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--gray); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+.tab-bar {
+  display: flex; gap: 2px; margin-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 10px 16px; border: none; background: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--gray);
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+  transition: all 0.15s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; min-height: 44px;
+}
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
@@ -129,27 +314,154 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 
 /* Checklist */
 .checklist { list-style: none; }
-.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.6; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px; line-height: 1.6;
+}
 .checklist li:last-child { border-bottom: none; }
 .check-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
 
 /* Home */
-.home-stat { background: var(--white); border-radius: 12px; padding: 18px 16px; box-shadow: var(--shadow); text-align: center; }
+.home-stat {
+  background: var(--white); border-radius: 12px; padding: 18px 16px;
+  box-shadow: var(--shadow); text-align: center;
+}
 .home-stat .num { font-size: 30px; font-weight: 800; line-height: 1; }
 .home-stat .label { font-size: 12px; color: var(--gray); margin-top: 6px; }
-.quick-btn { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; text-align: left; width: 100%; box-shadow: var(--shadow); transition: all 0.15s; }
+.quick-btn {
+  display: block; background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; cursor: pointer;
+  text-align: left; width: 100%; box-shadow: var(--shadow);
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+  min-height: 56px;
+}
 .quick-btn:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(46,134,193,0.15); transform: translateY(-1px); }
+.quick-btn:active { transform: scale(0.98); }
 .quick-btn .qb-title { font-size: 14px; font-weight: 700; color: var(--navy); }
 .quick-btn .qb-sub { font-size: 12px; color: var(--gray); margin-top: 3px; }
 
-/* Version tag */
-.version-tag { font-size: 10px; color: rgba(255,255,255,0.3); padding: 12px 16px; margin-top: auto; }
+/* ====== MOBILE RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .app-wrapper { flex-direction: column; height: auto; overflow: visible; }
+
+  /* Show mobile header */
+  .mobile-header { display: flex; }
+
+  /* Sidebar becomes slide-in drawer */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100%;
+    width: 280px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    padding-top: var(--safe-top);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-backdrop { display: block; position: fixed; }
+
+  /* Main adjusts for header + bottom nav */
+  .main {
+    padding-top: calc(var(--header-h) + var(--safe-top));
+    padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom));
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .page { padding: 16px 14px; }
+  .page-header { margin-bottom: 16px; }
+  .page-header h2 { font-size: 18px; }
+
+  /* Show bottom nav */
+  .bottom-nav { display: block; }
+
+  /* Grids collapse to 1 col */
+  .grid-2, .grid-3, .compare-grid { grid-template-columns: 1fr !important; gap: 10px; }
+
+  /* Cards */
+  .card { padding: 14px; border-radius: 10px; }
+  .card-title { font-size: 14px; }
+
+  /* Drug cards full width */
+  .drug-card { margin-bottom: 8px; }
+
+  /* RX body font & max-height */
+  .rx-body { font-size: 12px; line-height: 1.8; max-height: 220px; }
+
+  /* Tables */
+  .tbl { font-size: 12px; min-width: 480px; }
+  .tbl th, .tbl td { padding: 8px 10px; }
+
+  /* Home stats row 3-col (keep) */
+  .grid-3.home-stats { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px; }
+  .home-stat { padding: 12px 8px; }
+  .home-stat .num { font-size: 24px; }
+
+  /* Quick buttons */
+  .quick-btn { padding: 12px 14px; }
+
+  /* Info boxes */
+  .info-box { font-size: 12.5px; padding: 10px 13px; }
+
+  /* Pyramid scale down */
+  .pyramid-wrap { max-width: 100%; }
+  .pyramid-box { font-size: 11px; }
+
+  /* Flow wrap smaller */
+  .flow-box { font-size: 11px; padding: 7px 10px; }
+
+  /* Version tag */
+  .version-tag { padding-bottom: 24px; }
+
+  /* Rx header wrap */
+  .rx-header { gap: 8px; }
+  .rx-title { font-size: 14px; width: 100%; }
+  .rx-header > .copy-btn { margin-left: auto; }
+
+  /* Tab bar touch friendly */
+  .tab-btn { padding: 10px 14px; font-size: 12px; }
+
+  /* Table small hint */
+  .tbl-wrap::after {
+    content: "← 좌우로 스크롤하세요";
+    display: block; font-size: 11px; color: var(--gray);
+    text-align: right; padding: 4px 2px 0;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Hide mobile-only elements on desktop */
+  .mobile-header { display: none !important; }
+  .bottom-nav { display: none !important; }
+  .sidebar-backdrop { display: none !important; }
+  .sidebar { transform: none !important; position: static !important; }
+}
+
+/* Smooth scroll */
+.main, .rx-body { scroll-behavior: smooth; }
+
+/* Active page title in mobile header */
+#mobile-page-title { font-size: 15px; }
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<nav class="sidebar">
+<div class="app-wrapper">
+
+<!-- ====== MOBILE HEADER ====== -->
+<header class="mobile-header">
+  <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="mobile-header-title" id="mobile-page-title">💉 IVNT 정맥영양요법</span>
+</header>
+
+<!-- Sidebar backdrop -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+<!-- ====== SIDEBAR ====== -->
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <h1>💉 IVNT</h1>
     <p>정맥영양요법 임상 가이드</p>
@@ -157,40 +469,40 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 
   <div class="nav-section">
     <div class="nav-section-title">메인</div>
-    <div class="nav-item active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>홈</div>
+    <div class="nav-item active" onclick="showPage('home',this,'🏠 홈')"><span class="nav-icon">🏠</span>홈</div>
   </div>
 
   <div class="nav-section">
     <div class="nav-section-title">📚 의학 지식</div>
-    <div class="nav-item" onclick="showPage('basic',this)"><span class="nav-icon">🔬</span>IVNT 기초</div>
-    <div class="nav-item" onclick="showPage('antioxidant',this)"><span class="nav-icon">⚡</span>항산화제</div>
-    <div class="nav-item" onclick="showPage('vitamins',this)"><span class="nav-icon">💊</span>비타민 B군</div>
-    <div class="nav-item" onclick="showPage('myers',this)"><span class="nav-icon">🧪</span>Myers' Cocktail</div>
-    <div class="nav-item" onclick="showPage('highdose',this)"><span class="nav-icon">🎯</span>고용량 IVC 항암</div>
-    <div class="nav-item" onclick="showPage('fluid',this)"><span class="nav-icon">💧</span>수액 선택 가이드</div>
+    <div class="nav-item" onclick="showPage('basic',this,'🔬 IVNT 기초')"><span class="nav-icon">🔬</span>IVNT 기초</div>
+    <div class="nav-item" onclick="showPage('antioxidant',this,'⚡ 항산화제')"><span class="nav-icon">⚡</span>항산화제</div>
+    <div class="nav-item" onclick="showPage('vitamins',this,'💊 비타민 B군')"><span class="nav-icon">💊</span>비타민 B군</div>
+    <div class="nav-item" onclick="showPage('myers',this,'🧪 Myers Cocktail')"><span class="nav-icon">🧪</span>Myers' Cocktail</div>
+    <div class="nav-item" onclick="showPage('highdose',this,'🎯 고용량 IVC 항암')"><span class="nav-icon">🎯</span>고용량 IVC 항암</div>
+    <div class="nav-item" onclick="showPage('fluid',this,'💧 수액 선택 가이드')"><span class="nav-icon">💧</span>수액 선택 가이드</div>
   </div>
 
   <div class="nav-section">
     <div class="nav-section-title">🏥 실제 처방</div>
-    <div class="nav-item" onclick="showPage('rx-gastro',this)"><span class="nav-icon">🤢</span>장염/소화기</div>
-    <div class="nav-item" onclick="showPage('rx-cold',this)"><span class="nav-icon">🤧</span>감기/독감</div>
-    <div class="nav-item" onclick="showPage('rx-herpes',this)"><span class="nav-icon">🔴</span>대상포진</div>
-    <div class="nav-item" onclick="showPage('rx-skin',this)"><span class="nav-icon">🌿</span>피부염/두드러기</div>
-    <div class="nav-item" onclick="showPage('rx-cervical',this)"><span class="nav-icon">🦴</span>경추통/신경통</div>
-    <div class="nav-item" onclick="showPage('rx-liver',this)"><span class="nav-icon">🫀</span>간기능</div>
-    <div class="nav-item" onclick="showPage('rx-immune',this)"><span class="nav-icon">🛡️</span>면역증강 (싸이모신)</div>
+    <div class="nav-item" onclick="showPage('rx-gastro',this,'🤢 장염/소화기')"><span class="nav-icon">🤢</span>장염/소화기</div>
+    <div class="nav-item" onclick="showPage('rx-cold',this,'🤧 감기/독감')"><span class="nav-icon">🤧</span>감기/독감</div>
+    <div class="nav-item" onclick="showPage('rx-herpes',this,'🔴 대상포진')"><span class="nav-icon">🔴</span>대상포진</div>
+    <div class="nav-item" onclick="showPage('rx-skin',this,'🌿 피부염/두드러기')"><span class="nav-icon">🌿</span>피부염/두드러기</div>
+    <div class="nav-item" onclick="showPage('rx-cervical',this,'🦴 경추통/신경통')"><span class="nav-icon">🦴</span>경추통/신경통</div>
+    <div class="nav-item" onclick="showPage('rx-liver',this,'🫀 간기능')"><span class="nav-icon">🫀</span>간기능</div>
+    <div class="nav-item" onclick="showPage('rx-immune',this,'🛡️ 면역증강')"><span class="nav-icon">🛡️</span>면역증강 (싸이모신)</div>
   </div>
 
   <div class="nav-section">
     <div class="nav-section-title">📋 소견서</div>
-    <div class="nav-item" onclick="showPage('opinion',this)"><span class="nav-icon">📄</span>소견서 원칙/템플릿</div>
-    <div class="nav-item" onclick="showPage('drugs',this)"><span class="nav-icon">💉</span>약물 전체 목록</div>
+    <div class="nav-item" onclick="showPage('opinion',this,'📄 소견서 원칙')"><span class="nav-icon">📄</span>소견서 원칙/템플릿</div>
+    <div class="nav-item" onclick="showPage('drugs',this,'💉 약물 전체 목록')"><span class="nav-icon">💉</span>약물 전체 목록</div>
   </div>
 
-  <div class="version-tag">v1.0 · IVNT Clinical Guide</div>
+  <div class="version-tag">v1.1 · IVNT Clinical Guide · Mobile Optimized</div>
 </nav>
 
-<!-- Main -->
+<!-- ====== MAIN CONTENT ====== -->
 <div class="main">
 
 <!-- HOME -->
@@ -199,7 +511,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
     <h2>IVNT 정맥영양요법</h2>
     <p>개원의를 위한 의학 지식 + 실제 처방 통합 임상 가이드</p>
   </div>
-  <div class="grid-3" style="margin-bottom:20px;">
+  <div class="grid-3 home-stats" style="margin-bottom:20px;">
     <div class="home-stat"><div class="num" style="color:var(--accent)">8</div><div class="label">주요 적응증</div></div>
     <div class="home-stat"><div class="num" style="color:var(--teal)">12+</div><div class="label">처방 약물</div></div>
     <div class="home-stat"><div class="num" style="color:var(--orange)">7</div><div class="label">소견서 템플릿</div></div>
@@ -207,12 +519,12 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   <div class="card">
     <div class="card-title"><span class="icon">⚡</span>빠른 접근 — 적응증별 처방</div>
     <div class="grid-2">
-      <button class="quick-btn" onclick="showPage('rx-gastro',null)"><div class="qb-title">🤢 장염/소화기</div><div class="qb-sub">5%DW · 아세트펜 · 뉴트리헥스</div></button>
-      <button class="quick-btn" onclick="showPage('rx-cold',null)"><div class="qb-title">🤧 감기/독감</div><div class="qb-sub">아세트펜 · 지씨엔에이씨 · 페라미플루</div></button>
-      <button class="quick-btn" onclick="showPage('rx-herpes',null)"><div class="qb-title">🔴 대상포진</div><div class="qb-sub">히시파겐씨 · 푸르설타민 · 아세트펜</div></button>
-      <button class="quick-btn" onclick="showPage('rx-skin',null)"><div class="qb-title">🌿 피부염/두드러기</div><div class="qb-sub">히시파겐씨 · 메가비타식스 · 지씨비타오</div></button>
-      <button class="quick-btn" onclick="showPage('rx-cervical',null)"><div class="qb-title">🦴 경추통/어지러움/신경통</div><div class="qb-sub">지씨징코 · 메가네슘 · 푸르설타민</div></button>
-      <button class="quick-btn" onclick="showPage('rx-liver',null)"><div class="qb-title">🫀 간기능 개선</div><div class="qb-sub">히시파겐씨 · 라이넥</div></button>
+      <button class="quick-btn" onclick="showPage('rx-gastro',null,'🤢 장염/소화기')"><div class="qb-title">🤢 장염/소화기</div><div class="qb-sub">5%DW · 아세트펜 · 뉴트리헥스</div></button>
+      <button class="quick-btn" onclick="showPage('rx-cold',null,'🤧 감기/독감')"><div class="qb-title">🤧 감기/독감</div><div class="qb-sub">아세트펜 · 지씨엔에이씨 · 페라미플루</div></button>
+      <button class="quick-btn" onclick="showPage('rx-herpes',null,'🔴 대상포진')"><div class="qb-title">🔴 대상포진</div><div class="qb-sub">히시파겐씨 · 푸르설타민 · 아세트펜</div></button>
+      <button class="quick-btn" onclick="showPage('rx-skin',null,'🌿 피부염/두드러기')"><div class="qb-title">🌿 피부염/두드러기</div><div class="qb-sub">히시파겐씨 · 메가비타식스 · 지씨비타오</div></button>
+      <button class="quick-btn" onclick="showPage('rx-cervical',null,'🦴 경추통/신경통')"><div class="qb-title">🦴 경추통/어지러움/신경통</div><div class="qb-sub">지씨징코 · 메가네슘 · 푸르설타민</div></button>
+      <button class="quick-btn" onclick="showPage('rx-liver',null,'🫀 간기능')"><div class="qb-title">🫀 간기능 개선</div><div class="qb-sub">히시파겐씨 · 라이넥</div></button>
     </div>
   </div>
   <div class="grid-2">
@@ -290,21 +602,23 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
       <div class="card-title"><span class="icon">🍊</span>비타민 C (Ascorbic Acid)</div>
       <div class="info-box blue"><strong>🧬 특이 사항</strong>4,000만 년 전 유전자 변이로 <strong>인간이 합성할 수 없는</strong> 필수 영양소. 반드시 외부에서 공급 필요.</div>
       <div style="font-weight:700;color:var(--navy);margin:14px 0 10px;">비타민 C의 10가지 주요 역할</div>
-      <table class="tbl">
-        <thead><tr><th>역할</th><th>효과</th><th>임상 의의</th></tr></thead>
-        <tbody>
-          <tr><td>① 감기</td><td>증상 지속 시간↓</td><td>예방 및 회복 촉진</td></tr>
-          <tr><td>② 상처 치유</td><td>콜라겐 합성↑</td><td>수술 후 회복</td></tr>
-          <tr><td>③ 철 흡수</td><td>Non-heme Fe 생체이용률↑</td><td>빈혈 치료 보조</td></tr>
-          <tr><td>④ 생식기능</td><td>정자 기능, 여성 호르몬 개선</td><td>생식건강 지원</td></tr>
-          <tr><td>⑤ 동맥경화</td><td>혈중 지질↓, 혈관벽 강화</td><td>심혈관 질환 예방</td></tr>
-          <tr><td>⑥ 암</td><td>삶의 질 개선 (고용량 시 세포사멸)</td><td>보조 항암요법</td></tr>
-          <tr><td>⑦ 당뇨병</td><td>내피기능장애 차단, 망막병증 예방</td><td>합병증 예방</td></tr>
-          <tr><td>⑧ 면역력</td><td>NK세포 자극, 항균 작용</td><td>감염 예방/치료</td></tr>
-          <tr><td>⑨ 중금속</td><td>산화 손상 감소</td><td>해독 치료</td></tr>
-          <tr><td>⑩ 신경퇴행</td><td>알츠하이머 등 긍정적 결과</td><td>인지 기능 보호</td></tr>
-        </tbody>
-      </table>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>역할</th><th>효과</th><th>임상 의의</th></tr></thead>
+          <tbody>
+            <tr><td>① 감기</td><td>증상 지속 시간↓</td><td>예방 및 회복 촉진</td></tr>
+            <tr><td>② 상처 치유</td><td>콜라겐 합성↑</td><td>수술 후 회복</td></tr>
+            <tr><td>③ 철 흡수</td><td>Non-heme Fe 생체이용률↑</td><td>빈혈 치료 보조</td></tr>
+            <tr><td>④ 생식기능</td><td>정자 기능, 여성 호르몬 개선</td><td>생식건강 지원</td></tr>
+            <tr><td>⑤ 동맥경화</td><td>혈중 지질↓, 혈관벽 강화</td><td>심혈관 질환 예방</td></tr>
+            <tr><td>⑥ 암</td><td>삶의 질 개선 (고용량 시 세포사멸)</td><td>보조 항암요법</td></tr>
+            <tr><td>⑦ 당뇨병</td><td>내피기능장애 차단, 망막병증 예방</td><td>합병증 예방</td></tr>
+            <tr><td>⑧ 면역력</td><td>NK세포 자극, 항균 작용</td><td>감염 예방/치료</td></tr>
+            <tr><td>⑨ 중금속</td><td>산화 손상 감소</td><td>해독 치료</td></tr>
+            <tr><td>⑩ 신경퇴행</td><td>알츠하이머 등 긍정적 결과</td><td>인지 기능 보호</td></tr>
+          </tbody>
+        </table>
+      </div>
       <div style="font-weight:700;color:var(--navy);margin:16px 0 10px;">용량에 따른 작용 차이</div>
       <div class="compare-grid">
         <div class="info-box teal"><strong>낮은 용량 (10~25g) — 항산화</strong>• ROS (산화스트레스) 제거<br>• 웰빙, 항노화 효과<br>• 면역력 강화<br>• 기초 IVNT</div>
@@ -312,7 +626,6 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
       </div>
     </div>
   </div>
-
   <div id="ao-lipoic" class="tab-content">
     <div class="card">
       <div class="card-title"><span class="icon">🔄</span>리포산 (Alpha-Lipoic Acid)</div>
@@ -325,7 +638,6 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
       </div>
     </div>
   </div>
-
   <div id="ao-gluta" class="tab-content">
     <div class="card">
       <div class="card-title"><span class="icon">👑</span>글루타치온 (Glutathione)</div>
@@ -347,12 +659,12 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   <div class="info-box blue" style="margin-bottom:16px;"><strong>🔑 3 B's 개념 (에너지·스트레스·통증의 3가지 핵심)</strong>B5 (항스트레스) + B6 (아미노산 대사) + B12 (신경 건강) + 마그네슘 (천연 신경안정제)</div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-title"><span class="icon">🟠</span>B5 — 판토텐산 (Pantothenic Acid)</div>
+      <div class="card-title"><span class="icon">🟠</span>B5 — 판토텐산</div>
       <div class="badge badge-orange" style="margin-bottom:10px;">항스트레스 비타민</div>
       <div class="drug-indication" style="font-size:13px;line-height:1.8;">• CoA 구성성분 → 에너지 생성<br>• 신경전달물질 및 호르몬 합성<br>• 만성피로, 불면증 개선<br>• 부신 피로 개선<br><br><strong>주요 제품:</strong> 지씨비타오주 (B5)</div>
     </div>
     <div class="card">
-      <div class="card-title"><span class="icon">🟡</span>B6 — 피리독신 (Pyridoxine)</div>
+      <div class="card-title"><span class="icon">🟡</span>B6 — 피리독신</div>
       <div class="badge badge-yellow" style="margin-bottom:10px;">아미노산 대사 핵심</div>
       <div class="drug-indication" style="font-size:13px;line-height:1.8;">• 아미노산 대사의 핵심 조효소<br>• 비필수 아미노산 자체 합성<br>• 호모시스테인 감소 (B6+B9+B12 함께)<br>• 신경전달물질·세로토닌 촉진<br><br><strong>주요 제품:</strong> 메가비타식스주 (B6)</div>
     </div>
@@ -369,16 +681,18 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   </div>
   <div class="card">
     <div class="card-title"><span class="icon">📊</span>비타민 B군 비교표</div>
-    <table class="tbl">
-      <thead><tr><th>성분</th><th>별명</th><th>핵심 역할</th><th>대표 적응증</th><th>주요 제품명</th></tr></thead>
-      <tbody>
-        <tr><td><strong>B1 (티아민)</strong></td><td>에너지 비타민</td><td>에너지 대사</td><td>신경통, 근육통, 관절통</td><td>푸르설타민주</td></tr>
-        <tr><td><strong>B5 (판토텐산)</strong></td><td>항스트레스</td><td>CoA, 부신 기능</td><td>만성피로, 스트레스, 피부염</td><td>지씨비타오주</td></tr>
-        <tr><td><strong>B6 (피리독신)</strong></td><td>아미노산 대사</td><td>신경, 아미노산</td><td>피부염, 신경병증</td><td>메가비타식스주</td></tr>
-        <tr><td><strong>B12 (코발라민)</strong></td><td>와인주사</td><td>수초, 인지 기능</td><td>신경통, 기억력↓</td><td>비타민B12주</td></tr>
-        <tr><td><strong>Mg (마그네슘)</strong></td><td>신경안정제</td><td>근경련 완화, 대사</td><td>근통, 두통, 경련</td><td>메가네슘주</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>성분</th><th>별명</th><th>핵심 역할</th><th>대표 적응증</th><th>주요 제품명</th></tr></thead>
+        <tbody>
+          <tr><td><strong>B1 (티아민)</strong></td><td>에너지 비타민</td><td>에너지 대사</td><td>신경통, 근육통, 관절통</td><td>푸르설타민주</td></tr>
+          <tr><td><strong>B5 (판토텐산)</strong></td><td>항스트레스</td><td>CoA, 부신 기능</td><td>만성피로, 스트레스, 피부염</td><td>지씨비타오주</td></tr>
+          <tr><td><strong>B6 (피리독신)</strong></td><td>아미노산 대사</td><td>신경, 아미노산</td><td>피부염, 신경병증</td><td>메가비타식스주</td></tr>
+          <tr><td><strong>B12 (코발라민)</strong></td><td>와인주사</td><td>수초, 인지 기능</td><td>신경통, 기억력↓</td><td>비타민B12주</td></tr>
+          <tr><td><strong>Mg (마그네슘)</strong></td><td>신경안정제</td><td>근경련 완화, 대사</td><td>근통, 두통, 경련</td><td>메가네슘주</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -388,17 +702,19 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   <div class="info-box blue" style="margin-bottom:16px;"><strong>Myers' Cocktail = 3 B's + 마그네슘 + 칼슘 + 비타민C</strong>John Myers 박사가 개발한 IVNT의 기본 처방. 천식, 편두통, 만성피로 등 다양한 만성 증상에 효과적.</div>
   <div class="card">
     <div class="card-title"><span class="icon">📋</span>표준 구성 (한국식)</div>
-    <table class="tbl">
-      <thead><tr><th>성분</th><th>용량</th><th>역할</th><th>효과</th></tr></thead>
-      <tbody>
-        <tr><td><strong>마그네슘</strong></td><td>2~3ml</td><td>신경 안정</td><td>요통, 두통 완화</td></tr>
-        <tr><td><strong>B5 (판토텐산)</strong></td><td>500mg</td><td>항스트레스</td><td>피로 회복</td></tr>
-        <tr><td><strong>B6 (피리독신)</strong></td><td>50mg</td><td>아미노산 대사</td><td>신경 기능 개선</td></tr>
-        <tr><td><strong>B12 (와인주사)</strong></td><td>5mg</td><td>신경 건강</td><td>인지 기능↑</td></tr>
-        <tr><td><strong>비타민 C</strong></td><td>10g</td><td>항산화</td><td>면역력 강화</td></tr>
-        <tr><td><strong>칼슘 (글루콘산)</strong></td><td>적정량</td><td>근신경 기능</td><td>근경련 예방</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>성분</th><th>용량</th><th>역할</th><th>효과</th></tr></thead>
+        <tbody>
+          <tr><td><strong>마그네슘</strong></td><td>2~3ml</td><td>신경 안정</td><td>요통, 두통 완화</td></tr>
+          <tr><td><strong>B5 (판토텐산)</strong></td><td>500mg</td><td>항스트레스</td><td>피로 회복</td></tr>
+          <tr><td><strong>B6 (피리독신)</strong></td><td>50mg</td><td>아미노산 대사</td><td>신경 기능 개선</td></tr>
+          <tr><td><strong>B12 (와인주사)</strong></td><td>5mg</td><td>신경 건강</td><td>인지 기능↑</td></tr>
+          <tr><td><strong>비타민 C</strong></td><td>10g</td><td>항산화</td><td>면역력 강화</td></tr>
+          <tr><td><strong>칼슘 (글루콘산)</strong></td><td>적정량</td><td>근신경 기능</td><td>근경련 예방</td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="info-box teal" style="margin-top:12px;"><strong>💉 투여 속도: 120~150 GTT/분</strong></div>
   </div>
   <div class="card">
@@ -424,14 +740,16 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   </div>
   <div class="card">
     <div class="card-title"><span class="icon">💰</span>메가비타민 처방 예시</div>
-    <table class="tbl">
-      <thead><tr><th>제품명</th><th>비타민C</th><th>기초액</th><th>추가성분</th><th>예시가격</th></tr></thead>
-      <tbody>
-        <tr><td>Mega 10</td><td>10g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>40,000원</td></tr>
-        <tr><td>Mega 20</td><td>20g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>45,000원</td></tr>
-        <tr style="background:#fffbf0;"><td><strong>Mega 30</strong></td><td><strong>30g</strong></td><td><strong>증류액 500ml ⚠️</strong></td><td><strong>B, Mg, Ca</strong></td><td><strong>50,000원</strong></td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>제품명</th><th>비타민C</th><th>기초액</th><th>추가성분</th><th>예시가격</th></tr></thead>
+        <tbody>
+          <tr><td>Mega 10</td><td>10g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>40,000원</td></tr>
+          <tr><td>Mega 20</td><td>20g</td><td>N/S 250ml</td><td>B, Mg, Ca</td><td>45,000원</td></tr>
+          <tr style="background:#fffbf0;"><td><strong>Mega 30</strong></td><td><strong>30g</strong></td><td><strong>증류액 500ml ⚠️</strong></td><td><strong>B, Mg, Ca</strong></td><td><strong>50,000원</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="info-box yellow" style="margin-top:10px;"><strong>💡 Tip</strong>비타민C 10g = 20ml / 용량 증가 시 수액량을 동량 감소시켜 총 부피 일정하게 유지</div>
   </div>
 </div>
@@ -463,16 +781,18 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   </div>
   <div class="card">
     <div class="card-title"><span class="icon">📋</span>고용량 IVC 투여 지침</div>
-    <table class="tbl">
-      <thead><tr><th>항목</th><th>내용</th></tr></thead>
-      <tbody>
-        <tr><td>투여 속도</td><td>120~150 GTT/분</td></tr>
-        <tr><td>비타민C 10g =</td><td>20ml</td></tr>
-        <tr><td>30g 이상 기초액</td><td><strong>증류액 500ml 필수</strong> (Na-ascorbic acid 제형)</td></tr>
-        <tr><td>당뇨/암 환자</td><td>포도당(DW) 사용 금지 → <strong>N/S</strong></td></tr>
-        <tr><td>금지 조합</td><td>탄산수소나트륨 + 글루콘산칼슘 동시 투여 금지</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>투여 속도</td><td>120~150 GTT/분</td></tr>
+          <tr><td>비타민C 10g =</td><td>20ml</td></tr>
+          <tr><td>30g 이상 기초액</td><td><strong>증류액 500ml 필수</strong></td></tr>
+          <tr><td>당뇨/암 환자</td><td>포도당(DW) 사용 금지 → <strong>N/S</strong></td></tr>
+          <tr><td>금지 조합</td><td>탄산수소나트륨 + 글루콘산칼슘 동시 투여 금지</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -481,17 +801,19 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   <div class="page-header"><h2>💧 수액 선택 가이드</h2><p>상황별 올바른 기초수액 선택</p></div>
   <div class="card">
     <div class="card-title"><span class="icon">📊</span>기초수액 선택 기준표</div>
-    <table class="tbl">
-      <thead><tr><th>상황</th><th>선택 수액</th><th>이유</th><th>주의사항</th></tr></thead>
-      <tbody>
-        <tr><td>비타민C 10g</td><td><span class="badge badge-blue">N/S 100ml</span></td><td>삼투압 1,200mOsm 이하 유지</td><td>통증 없음</td></tr>
-        <tr><td>비타민C 20g</td><td><span class="badge badge-blue">N/S 200~250ml</span></td><td>삼투압 조절</td><td>통증 없음</td></tr>
-        <tr><td>비타민C 30g 이상</td><td><span class="badge badge-red">증류액 500ml ⚠️</span></td><td>Na-ascorbic acid 제형 필요</td><td>필수 사항</td></tr>
-        <tr><td>당뇨 환자</td><td><span class="badge badge-teal">N/S</span></td><td>혈당 조절 필요</td><td>DW 절대 금지</td></tr>
-        <tr><td>암 환자</td><td><span class="badge badge-teal">N/S</span></td><td>암세포 포도당 이용 차단</td><td>DW 절대 금지</td></tr>
-        <tr><td>일반 탈수/장염</td><td><span class="badge badge-yellow">5%DW or N/S</span></td><td>전해질/수분 보충</td><td>상황에 따라 선택</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>상황</th><th>선택 수액</th><th>이유</th><th>주의사항</th></tr></thead>
+        <tbody>
+          <tr><td>비타민C 10g</td><td><span class="badge badge-blue">N/S 100ml</span></td><td>삼투압 1,200mOsm 이하 유지</td><td>통증 없음</td></tr>
+          <tr><td>비타민C 20g</td><td><span class="badge badge-blue">N/S 200~250ml</span></td><td>삼투압 조절</td><td>통증 없음</td></tr>
+          <tr><td>비타민C 30g 이상</td><td><span class="badge badge-red">증류액 500ml ⚠️</span></td><td>Na-ascorbic acid 제형 필요</td><td>필수 사항</td></tr>
+          <tr><td>당뇨 환자</td><td><span class="badge badge-teal">N/S</span></td><td>혈당 조절 필요</td><td>DW 절대 금지</td></tr>
+          <tr><td>암 환자</td><td><span class="badge badge-teal">N/S</span></td><td>암세포 포도당 이용 차단</td><td>DW 절대 금지</td></tr>
+          <tr><td>일반 탈수/장염</td><td><span class="badge badge-yellow">5%DW or N/S</span></td><td>전해질/수분 보충</td><td>상황에 따라 선택</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="card">
     <div class="card-title"><span class="icon">⚗️</span>삼투압 원칙</div>
@@ -604,7 +926,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   <div class="page-header"><h2>🔴 대상포진 처방</h2><p>바이러스성 피부질환 + 신경통</p></div>
   <div class="grid-2" style="margin-bottom:14px;">
     <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">해열·진통·소염 / 대상포진 통증 완화</div></div>
-    <div class="drug-card"><div class="drug-name">히시파겐씨주 (히씨파겐씨)</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환·헤르페스·대상포진 / 바이러스성 피부질환</div></div>
+    <div class="drug-card"><div class="drug-name">히시파겐씨주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환·헤르페스·대상포진</div></div>
     <div class="drug-card"><div class="drug-name">푸르설타민주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B1 결핍·대사장애 "추정" 시 / 신경통·근육통·관절통 치료</div></div>
   </div>
   <div class="info-box yellow" style="margin-bottom:14px;"><strong>⚖️ 푸르설타민주 처방 근거</strong>식약처 효능효과: 결핍 수치 없어도 증상 및 이학적검사로 <strong>"추정"</strong>되는 경우 의사 판단으로 처방 가능<br>(의료법 17조 1항: 직접 진찰한 의사의 고유 처방 권한)</div>
@@ -634,7 +956,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 <div id="page-rx-skin" class="page">
   <div class="page-header"><h2>🌿 피부염/두드러기 처방</h2><p>알레르기성 피부질환 · 습진 · 두드러기</p></div>
   <div class="grid-2" style="margin-bottom:14px;">
-    <div class="drug-card"><div class="drug-name">히시파겐씨주 (히씨파겐씨)</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환 / 식약처 허가 피부질환</div></div>
+    <div class="drug-card"><div class="drug-name">히시파겐씨주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">두드러기·습진·알레르기성 피부질환 / 식약처 허가 피부질환</div></div>
     <div class="drug-card"><div class="drug-name">메가비타식스주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B6 결핍·대사장애 "추정" 시 / 급·만성 습진, 지루성 습진, 접촉피부염</div></div>
     <div class="drug-card"><div class="drug-name">지씨비타오주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B5 결핍·대사장애 "추정" 시 / 급·만성 습진, 접촉피부염</div></div>
   </div>
@@ -662,7 +984,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 <div id="page-rx-cervical" class="page">
   <div class="page-header"><h2>🦴 경추통/어지러움/신경통 처방</h2><p>경추성두통 · 신경통 · 근경련 · 손발저림 · 혈액순환장애</p></div>
   <div class="grid-2" style="margin-bottom:14px;">
-    <div class="drug-card"><div class="drug-name">지씨징코주</div><div class="drug-dose">5ml × 1~2 ample</div><div class="drug-indication">두통·어지럼·말초동맥순환장애(혈액순환장애) / 체중·증상 고려하여 용량 조절</div></div>
+    <div class="drug-card"><div class="drug-name">지씨징코주</div><div class="drug-dose">5ml × 1~2 ample</div><div class="drug-indication">두통·어지럼·말초동맥순환장애 / 체중·증상 고려 용량 조절</div></div>
     <div class="drug-card"><div class="drug-name">메가네슘주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">경련·자간·전해질 보급 / 근경련·통증 완화 / 결핍수치 없어도 처방 가능</div></div>
     <div class="drug-card"><div class="drug-name">푸르설타민주</div><div class="drug-dose">적정 용량</div><div class="drug-indication">B1 결핍·대사장애 "추정" 시 / 신경통·근육통·관절통</div></div>
     <div class="drug-card"><div class="drug-name">아세트펜프리믹스주</div><div class="drug-dose">100ml / 1bag</div><div class="drug-indication">통증·발열 완화 (필요 시 추가)</div></div>
@@ -723,8 +1045,8 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
 <div id="page-rx-immune" class="page">
   <div class="page-header"><h2>🛡️ 면역증강 — 싸이모신 알파</h2><p>Thymosin Alpha-1 면역증강요법</p></div>
   <div class="card">
-    <div class="card-title"><span class="icon">🔬</span>싸이모신 알파 (Thymosin Alpha-1) 기전</div>
-    <div class="info-box purple"><strong>이뮨알파원 (지씨웰빙이뮨알파원) — 싸이모신알파 주사</strong>인체 내 흉선성분 thymosin alpha-1을 반복적으로 <strong>피하주사</strong>. 70여개 이상의 임상 시행, 효과 입증.</div>
+    <div class="card-title"><span class="icon">🔬</span>싸이모신 알파 기전</div>
+    <div class="info-box purple"><strong>이뮨알파원 — 싸이모신알파 주사</strong>인체 내 흉선성분 thymosin alpha-1을 반복적으로 <strong>피하주사</strong>. 70여개 이상의 임상 시행, 효과 입증.</div>
     <div style="margin-top:14px;">
       <div class="principle-item"><div class="principle-num" style="background:var(--purple)">①</div><div class="principle-text"><strong>NK cell, Cytotoxic T Cell 분비</strong> → 암세포 공격 유도</div></div>
       <div class="principle-item"><div class="principle-num" style="background:var(--purple)">②</div><div class="principle-text"><strong>T helper cell 촉진</strong> → B cell·T cell 면역반응 총괄 → 더 많은 공격세포·항체 생성</div></div>
@@ -734,16 +1056,18 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans
   </div>
   <div class="card">
     <div class="card-title"><span class="icon">📋</span>약제 분류 및 허가</div>
-    <table class="tbl">
-      <thead><tr><th>항목</th><th>내용</th></tr></thead>
-      <tbody>
-        <tr><td>제품명</td><td>지씨웰빙이뮨알파원주 (Thymosin-alpha-1)</td></tr>
-        <tr><td>투여 방법</td><td><strong>피하주사 (SC)</strong> — 반복 투여</td></tr>
-        <tr><td>보건복지부 분류</td><td>분류번호 429 — <strong>기타의 종양치료제</strong></td></tr>
-        <tr><td>식약처 등재</td><td>"종양용약" = <strong>항암제</strong> 분류</td></tr>
-        <tr><td>주요 적응 대상</td><td>암 수술 후 면역력 저하 환자, 면역 보조 치료 필요 환자</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>제품명</td><td>지씨웰빙이뮨알파원주 (Thymosin-alpha-1)</td></tr>
+          <tr><td>투여 방법</td><td><strong>피하주사 (SC)</strong> — 반복 투여</td></tr>
+          <tr><td>보건복지부 분류</td><td>분류번호 429 — <strong>기타의 종양치료제</strong></td></tr>
+          <tr><td>식약처 등재</td><td>"종양용약" = <strong>항암제</strong> 분류</td></tr>
+          <tr><td>주요 적응 대상</td><td>암 수술 후 면역력 저하 환자, 면역 보조 치료 필요 환자</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="rx-card">
     <div class="rx-header">
@@ -798,36 +1122,107 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
   <div class="page-header"><h2>💉 약물 전체 목록</h2><p>IVNT 처방 약물 식약처 허가 근거 요약</p></div>
   <div class="card">
     <div class="card-title"><span class="icon">📊</span>주요 약물 처방 근거 요약표</div>
-    <table class="tbl">
-      <thead><tr><th>약물명</th><th>분류</th><th>식약처 허가 효능효과</th><th>처방 포인트</th></tr></thead>
-      <tbody>
-        <tr><td><strong>아세트펜프리믹스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>해열/진통/소염제</td><td>발열·통증 모든 상황 적용</td></tr>
-        <tr><td><strong>뉴트리헥스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>복합 비타민·미네랄</td><td>저영양상태, 경구섭취 감소</td></tr>
-        <tr><td><strong>5%포도당주사</strong></td><td><span class="badge badge-blue">비급여</span></td><td>탈수·전해질 보충</td><td>탈수, 장염, 일반 수액</td></tr>
-        <tr><td><strong>지씨엔에이씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>급·만성 기관지염, 부비동염</td><td>기침·객담 있는 상기도 감염</td></tr>
-        <tr><td><strong>페라미플루주</strong></td><td><span class="badge badge-teal">인정비급여</span></td><td>A·B형 인플루엔자</td><td>독감 확진 시 신속 투여 (15분 IV)</td></tr>
-        <tr><td><strong>히시파겐씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두드러기·습진·피부질환·간기능</td><td>피부질환 + 간기능 겸용 가능</td></tr>
-        <tr><td><strong>푸르설타민주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B1 결핍·대사장애 추정 시 신경통</td><td>"추정" 처방 — 결핍 수치 불필요</td></tr>
-        <tr><td><strong>메가비타식스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B6 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
-        <tr><td><strong>지씨비타오주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B5 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
-        <tr><td><strong>메가네슘주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>경련·자간·전해질 보급</td><td>결핍 수치 없어도 처방 가능</td></tr>
-        <tr><td><strong>지씨징코주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두통·어지럼·말초순환장애</td><td>혈액순환 + 어지럼에 사용</td></tr>
-        <tr><td><strong>라이넥주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>간질환 간기능 개선</td><td>간수치 상승 시 히시파겐씨와 병용</td></tr>
-        <tr><td><strong>이뮨알파원주</strong></td><td><span class="badge badge-purple">종양치료제</span></td><td>기타 종양치료제 (항암제 분류)</td><td>암 환자 면역증강, 피하주사</td></tr>
-      </tbody>
-    </table>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>약물명</th><th>분류</th><th>식약처 허가 효능효과</th><th>처방 포인트</th></tr></thead>
+        <tbody>
+          <tr><td><strong>아세트펜프리믹스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>해열/진통/소염제</td><td>발열·통증 모든 상황 적용</td></tr>
+          <tr><td><strong>뉴트리헥스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>복합 비타민·미네랄</td><td>저영양상태, 경구섭취 감소</td></tr>
+          <tr><td><strong>5%포도당주사</strong></td><td><span class="badge badge-blue">비급여</span></td><td>탈수·전해질 보충</td><td>탈수, 장염, 일반 수액</td></tr>
+          <tr><td><strong>지씨엔에이씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>급·만성 기관지염, 부비동염</td><td>기침·객담 있는 상기도 감염</td></tr>
+          <tr><td><strong>페라미플루주</strong></td><td><span class="badge badge-teal">인정비급여</span></td><td>A·B형 인플루엔자</td><td>독감 확진 시 신속 투여 (15분 IV)</td></tr>
+          <tr><td><strong>히시파겐씨주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두드러기·습진·피부질환·간기능</td><td>피부질환 + 간기능 겸용 가능</td></tr>
+          <tr><td><strong>푸르설타민주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B1 결핍·대사장애 추정 시 신경통</td><td>"추정" 처방 — 결핍 수치 불필요</td></tr>
+          <tr><td><strong>메가비타식스주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B6 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
+          <tr><td><strong>지씨비타오주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>B5 결핍·대사장애 추정 시 피부질환</td><td>"추정" 처방 가능</td></tr>
+          <tr><td><strong>메가네슘주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>경련·자간·전해질 보급</td><td>결핍 수치 없어도 처방 가능</td></tr>
+          <tr><td><strong>지씨징코주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>두통·어지럼·말초순환장애</td><td>혈액순환 + 어지럼에 사용</td></tr>
+          <tr><td><strong>라이넥주</strong></td><td><span class="badge badge-blue">비급여</span></td><td>간질환 간기능 개선</td><td>간수치 상승 시 히시파겐씨와 병용</td></tr>
+          <tr><td><strong>이뮨알파원주</strong></td><td><span class="badge badge-purple">종양치료제</span></td><td>기타 종양치료제 (항암제 분류)</td><td>암 환자 면역증강, 피하주사</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 </div><!-- /main -->
 
+<!-- ====== BOTTOM NAV ====== -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bottom-nav-item active" id="bn-home" onclick="showPage('home',null,'🏠 홈');setBottomNav('bn-home')">
+      <span class="bn-icon">🏠</span>홈
+    </button>
+    <button class="bottom-nav-item" id="bn-basic" onclick="showPage('basic',null,'🔬 IVNT 기초');setBottomNav('bn-basic')">
+      <span class="bn-icon">🔬</span>기초
+    </button>
+    <button class="bottom-nav-item" id="bn-ao" onclick="showPage('antioxidant',null,'⚡ 항산화제');setBottomNav('bn-ao')">
+      <span class="bn-icon">⚡</span>항산화
+    </button>
+    <button class="bottom-nav-item" id="bn-rx" onclick="showPage('rx-gastro',null,'🤢 장염/소화기');setBottomNav('bn-rx')">
+      <span class="bn-icon">💊</span>처방
+    </button>
+    <button class="bottom-nav-item" id="bn-opinion" onclick="showPage('opinion',null,'📄 소견서');setBottomNav('bn-opinion')">
+      <span class="bn-icon">📄</span>소견서
+    </button>
+    <button class="bottom-nav-item" id="bn-drugs" onclick="showPage('drugs',null,'💉 약물목록');setBottomNav('bn-drugs')">
+      <span class="bn-icon">💉</span>약물
+    </button>
+  </div>
+</nav>
+
+</div><!-- /app-wrapper -->
+
 <script>
-function showPage(id, el) {
+// Track bottom nav mapping
+const pageToBottomNav = {
+  'home': 'bn-home',
+  'basic': 'bn-basic',
+  'antioxidant': 'bn-ao',
+  'vitamins': 'bn-ao',
+  'myers': 'bn-ao',
+  'highdose': 'bn-ao',
+  'fluid': 'bn-ao',
+  'rx-gastro': 'bn-rx',
+  'rx-cold': 'bn-rx',
+  'rx-herpes': 'bn-rx',
+  'rx-skin': 'bn-rx',
+  'rx-cervical': 'bn-rx',
+  'rx-liver': 'bn-rx',
+  'rx-immune': 'bn-rx',
+  'opinion': 'bn-opinion',
+  'drugs': 'bn-drugs',
+};
+
+function showPage(id, el, title) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   if (el) el.classList.add('active');
+
+  // Update mobile header title
+  if (title) {
+    document.getElementById('mobile-page-title').textContent = title;
+  }
+
+  // Update bottom nav
+  const bnId = pageToBottomNav[id];
+  if (bnId) setBottomNav(bnId);
+
+  // Scroll to top on page change
+  const mainEl = document.querySelector('.main');
+  if (mainEl) mainEl.scrollTo({ top: 0 });
+  window.scrollTo({ top: 0 });
+
+  // Close sidebar on mobile
+  closeSidebar();
+}
+
+function setBottomNav(activeId) {
+  document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(activeId);
+  if (btn) btn.classList.add('active');
 }
 
 function switchTab(group, tabId, btn) {
@@ -864,6 +1259,32 @@ function copyRx(id) {
     setTimeout(() => { btn.innerHTML = orig; }, 2200);
   }
 }
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+  document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  sidebar.classList.remove('open');
+  backdrop.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Swipe to close sidebar
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  if (dx > 60 && document.getElementById('sidebar').classList.contains('open')) {
+    closeSidebar();
+  }
+}, { passive: true });
 </script>
 </body>
 </html>
