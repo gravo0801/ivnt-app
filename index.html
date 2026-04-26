@@ -438,6 +438,134 @@ body {
   .sidebar { transform: none !important; position: static !important; }
 }
 
+
+/* ====== EDIT / NOTES FEATURES ====== */
+.rx-edit-btn {
+  background: none; border: 1.5px solid var(--accent);
+  color: var(--accent); padding: 7px 13px; border-radius: 8px;
+  font-size: 12px; cursor: pointer; font-weight: 600;
+  white-space: nowrap; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent; min-height: 36px;
+  transition: all 0.15s;
+}
+.rx-edit-btn:hover { background: var(--accent); color: #fff; }
+.rx-edit-btn.editing { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+.rx-edit-area {
+  display: none; margin-top: 12px;
+}
+.rx-edit-area.visible { display: block; }
+.rx-textarea {
+  width: 100%; min-height: 260px; padding: 14px 16px;
+  font-size: 12.5px; line-height: 1.9; color: #2c3e50;
+  background: #fffbf0; border: 2px solid var(--accent);
+  border-radius: 8px; resize: vertical; font-family: inherit;
+  -webkit-overflow-scrolling: touch;
+}
+.rx-edit-actions {
+  display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+}
+.btn-save {
+  background: var(--teal); color: #fff; border: none;
+  padding: 9px 18px; border-radius: 8px; font-size: 13px;
+  font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.btn-cancel {
+  background: var(--gray); color: #fff; border: none;
+  padding: 9px 18px; border-radius: 8px; font-size: 13px;
+  font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.btn-reset {
+  background: none; color: var(--red); border: 1.5px solid var(--red);
+  padding: 9px 14px; border-radius: 8px; font-size: 12px;
+  font-weight: 600; cursor: pointer; margin-left: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.rx-edited-tag {
+  display: none; font-size: 10px; color: var(--orange);
+  background: var(--light-orange); padding: 2px 8px;
+  border-radius: 10px; font-weight: 700; flex-shrink: 0;
+}
+.rx-edited-tag.visible { display: inline-block; }
+
+/* Notes section */
+.notes-section {
+  background: var(--white); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 18px; margin-bottom: 16px;
+  border-top: 3px solid var(--accent);
+}
+.notes-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.notes-title {
+  font-size: 14px; font-weight: 700; color: var(--navy);
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-add-note {
+  background: var(--accent); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 8px; font-size: 12px;
+  font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.note-item {
+  background: var(--light-yellow); border-radius: 8px;
+  border-left: 4px solid var(--yellow); padding: 12px 14px;
+  margin-bottom: 10px; position: relative;
+}
+.note-item-title {
+  font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.note-item-body {
+  font-size: 12.5px; line-height: 1.7; color: #2c3e50; white-space: pre-wrap;
+}
+.note-item-actions {
+  display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;
+}
+.btn-note-edit {
+  background: none; border: 1px solid var(--accent); color: var(--accent);
+  padding: 4px 10px; border-radius: 6px; font-size: 11px;
+  cursor: pointer; font-weight: 600;
+}
+.btn-note-delete {
+  background: none; border: 1px solid var(--red); color: var(--red);
+  padding: 4px 10px; border-radius: 6px; font-size: 11px;
+  cursor: pointer; font-weight: 600;
+}
+.note-empty {
+  font-size: 13px; color: var(--gray); text-align: center;
+  padding: 16px 0; font-style: italic;
+}
+
+/* Note editor modal */
+.note-modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 500;
+  align-items: center; justify-content: center; padding: 16px;
+}
+.note-modal-bg.open { display: flex; }
+.note-modal {
+  background: var(--white); border-radius: 14px;
+  padding: 22px; width: 100%; max-width: 520px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+}
+.note-modal-title { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+.note-modal input {
+  width: 100%; padding: 10px 14px; font-size: 14px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  margin-bottom: 10px; font-family: inherit; color: #1a1a2e;
+}
+.note-modal input:focus, .note-modal textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.note-modal textarea {
+  width: 100%; min-height: 160px; padding: 10px 14px;
+  font-size: 13px; line-height: 1.8; border: 1.5px solid var(--border);
+  border-radius: 8px; resize: vertical; font-family: inherit; color: #1a1a2e;
+}
+.note-modal-actions {
+  display: flex; gap: 8px; margin-top: 14px; justify-content: flex-end;
+}
+
 /* Smooth scroll */
 .main, .rx-body { scroll-behavior: smooth; }
 
@@ -834,7 +962,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 장염 소견서 (표준형)</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">수액요법</span></div>
-      <button class="copy-btn" onclick="copyRx('rx1')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx1')">
+      <span class="rx-edited-tag" id="edited-tag-rx1">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx1" onclick="toggleEditRx('rx1')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx1">상기환자는 구역, 구토, 복통, 설사, 발열을 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
 이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
@@ -848,12 +978,22 @@ body {
 2. 아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
 
 3. 뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    <div class="rx-edit-area" id="edit-area-rx1">
+      <textarea class="rx-textarea" id="textarea-rx1"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx1')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx1')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx1')">🔄 초기화</button>
+      </div>
+    </div>
   </div>
   <div class="rx-card">
     <div class="rx-header">
       <div class="rx-title">📄 용종절제 후 처방 (당일)</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
-      <button class="copy-btn" onclick="copyRx('rx2')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx2')">
+      <span class="rx-edited-tag" id="edited-tag-rx2">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx2" onclick="toggleEditRx('rx2')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx2">상기환자는 구역, 구토, 복통, 설사를 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
 이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
@@ -861,6 +1001,22 @@ body {
 
 -아래-
 뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    <div class="rx-edit-area" id="edit-area-rx2">
+      <textarea class="rx-textarea" id="textarea-rx2"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx2')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx2')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx2')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-gastro">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-gastro', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-gastro"></div>
   </div>
 </div>
 
@@ -881,7 +1037,9 @@ body {
       <div class="rx-header">
         <div class="rx-title">📄 감기/상기도 감염 소견서</div>
         <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
-        <button class="copy-btn" onclick="copyRx('rx3')">📋 복사</button>
+        <button class="copy-btn" onclick="copyRx('rx3')">
+      <span class="rx-edited-tag" id="edited-tag-rx3">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx3" onclick="toggleEditRx('rx3')">✏️ 편집</button>📋 복사</button>
       </div>
       <div class="rx-body" id="rx3">상기 환자는 급성기관지염과 동반된 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 전신의 근통, 통증 증상으로 급성 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
 
@@ -893,6 +1051,14 @@ body {
 지씨엔에이씨주: 식약처로부터 급/만성 기관지염, 인후두염, 부비동염 등에 효능효과를 허가받은 진해거담제로 기침, 객담제거, 급성기관지염 완화를 위해 투여함.
 
 뉴트리헥스주: 감기몸살로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    <div class="rx-edit-area" id="edit-area-rx3">
+      <textarea class="rx-textarea" id="textarea-rx3"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx3')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx3')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx3')">🔄 초기화</button>
+      </div>
+    </div>
     </div>
   </div>
   <div id="cold-cold-flu" class="tab-content">
@@ -905,7 +1071,9 @@ body {
       <div class="rx-header">
         <div class="rx-title">📄 인플루엔자 소견서</div>
         <div class="rx-badges"><span class="badge badge-blue">인정비급여</span></div>
-        <button class="copy-btn" onclick="copyRx('rx4')">📋 복사</button>
+        <button class="copy-btn" onclick="copyRx('rx4')">
+      <span class="rx-edited-tag" id="edited-tag-rx4">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx4" onclick="toggleEditRx('rx4')">✏️ 편집</button>📋 복사</button>
       </div>
       <div class="rx-body" id="rx4">상기 환자는 인플루엔자 양성소견으로 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 통증 증상으로 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
 
@@ -917,7 +1085,23 @@ body {
 아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
 
 뉴트리헥스주: 독감으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.</div>
+    <div class="rx-edit-area" id="edit-area-rx4">
+      <textarea class="rx-textarea" id="textarea-rx4"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx4')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx4')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx4')">🔄 초기화</button>
+      </div>
     </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-cold">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-cold', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-cold"></div>
   </div>
 </div>
 
@@ -934,7 +1118,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 대상포진 소견서</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-red">신경통</span></div>
-      <button class="copy-btn" onclick="copyRx('rx5')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx5')">
+      <span class="rx-edited-tag" id="edited-tag-rx5">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx5" onclick="toggleEditRx('rx5')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx5">상기 환자는 등/허리/옆구리의 대상포진이 발병하여 해당병변에 알레르기성 두드러기가 동반된 피부염과 대상포진 신경통을 주소로 내원하였음. 약물 치료와 연고치료에도 신경통 및 가려움 동반한 피부증상 호전 없음.
 또한 구강근처 헤르페스 피부염이 동반되어 경구로 삼킴이 힘들고 식욕부진이 동반되어 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
@@ -949,6 +1135,22 @@ body {
 
 푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
 푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.</div>
+    <div class="rx-edit-area" id="edit-area-rx5">
+      <textarea class="rx-textarea" id="textarea-rx5"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx5')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx5')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx5')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-herpes">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-herpes', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-herpes"></div>
   </div>
 </div>
 
@@ -964,7 +1166,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 피부염/두드러기 소견서</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-purple">피부질환</span></div>
-      <button class="copy-btn" onclick="copyRx('rx6')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx6')">
+      <span class="rx-edited-tag" id="edited-tag-rx6">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx6" onclick="toggleEditRx('rx6')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx6">상기 환자는 설염/알러지성 피부염 및 심한 두드러기 증상으로 지속적인 약물복용 하였으나 일시적 호전 후에 다시 악화되는 증상 보여 일상생활에 불편과 어려움을 호소함. 상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
 
@@ -977,6 +1181,22 @@ body {
 
 지씨비타오주: 식약처로부터 판토텐산(비타민B5)의 결핍 또는 대사장애가 관여한다고 추정되는 경우 급만성습진, 접촉피부염 등 피부질환 치료에 효능효과를 허가받은 지씨비타오주를 투여함.
 위 약제들은 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적 검사)한 결과 의학적으로 추정되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 의료법17조1항에 따라 환자를 직접진찰한 의사(주치의)의 고유권한임.</div>
+    <div class="rx-edit-area" id="edit-area-rx6">
+      <textarea class="rx-textarea" id="textarea-rx6"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx6')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx6')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx6')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-skin">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-skin', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-skin"></div>
   </div>
 </div>
 
@@ -994,7 +1214,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 경추통/순환장애/신경통 소견서</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-orange">신경통</span></div>
-      <button class="copy-btn" onclick="copyRx('rx7')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx7')">
+      <span class="rx-edited-tag" id="edited-tag-rx7">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx7" onclick="toggleEditRx('rx7')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx7">상기 환자는 경추성두통, 그로 인한 양측 어깨 신경통과 근경련증상, 손발저림과 수족냉증 현상, 어지러움과 그로 인한 구역감을 호소로 내원함.
 약물치료에도 호전 없으며 해당 증상들로 인해 일상생활의 제약 및 경구식이의 감소 등의 소모성질환도 함께 의심됨. 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
@@ -1009,6 +1231,22 @@ body {
 
 푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
 푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.</div>
+    <div class="rx-edit-area" id="edit-area-rx7">
+      <textarea class="rx-textarea" id="textarea-rx7"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx7')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx7')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx7')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-cervical">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-cervical', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-cervical"></div>
   </div>
 </div>
 
@@ -1024,7 +1262,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 간기능 개선 소견서</div>
       <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">간질환</span></div>
-      <button class="copy-btn" onclick="copyRx('rx8')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx8')">
+      <span class="rx-edited-tag" id="edited-tag-rx8">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx8" onclick="toggleEditRx('rx8')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx8">* 혈액검사 시행일 20  /  /
 : AST/ALT/GGT (  /  /  )
@@ -1038,6 +1278,22 @@ body {
 [법정비급여 주사제 식약처 허가사항 및 치료 소견]
 
 히시파겐씨주 및 라이넥주: 식약처로부터 간질환의 간기능 개선 치료에 효능효과를 허가받은 주사제들로 간세포의 자멸을 억제하고, 간세포의 재생을 촉진함으로써 간의 피로 완화 및 간 기능 개선 치료에 효과적임.</div>
+    <div class="rx-edit-area" id="edit-area-rx8">
+      <textarea class="rx-textarea" id="textarea-rx8"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx8')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx8')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx8')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-liver">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-liver', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-liver"></div>
   </div>
 </div>
 
@@ -1073,7 +1329,9 @@ body {
     <div class="rx-header">
       <div class="rx-title">📄 싸이모신 알파 소견서</div>
       <div class="rx-badges"><span class="badge badge-purple">항암보조</span></div>
-      <button class="copy-btn" onclick="copyRx('rx9')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx9')">
+      <span class="rx-edited-tag" id="edited-tag-rx9">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx9" onclick="toggleEditRx('rx9')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx9">상기환자 20   년 [수술명: 예) 좌측 갑상선 반절제술 및 림프절 곽청술] 시행받은 분으로
 
@@ -1088,6 +1346,22 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
 이상 본원에서 실시한 지씨웰빙이뮨알파원(싸이모신알파) 주사는 상기기전과 이론을 바탕으로 실시되고 있는 암세포 사멸을 목적으로 한 항암치료임을 분명히 밝힙니다.
 
 지씨웰빙이뮨알파원주(=Thymosin-alpha-1): 보건복지부 약제 분류상 "분류번호:429.-기타의 종양치료제"로 식약처에 등재된 주사제로 ("기타의 종양치료제"는 보건복지부 약제 분류상 "종양용약"으로 "항암제"로 분류됨.)</div>
+    <div class="rx-edit-area" id="edit-area-rx9">
+      <textarea class="rx-textarea" id="textarea-rx9"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx9')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx9')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx9')">🔄 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section" id="notes-rx-immune">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('rx-immune', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-rx-immune"></div>
   </div>
 </div>
 
@@ -1108,12 +1382,22 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
   <div class="rx-card">
     <div class="rx-header">
       <div class="rx-title">📄 수액요법 간단 소견 (범용)</div>
-      <button class="copy-btn" onclick="copyRx('rx10')">📋 복사</button>
+      <button class="copy-btn" onclick="copyRx('rx10')">
+      <span class="rx-edited-tag" id="edited-tag-rx10">✏️ 수정됨</span>
+      <button class="rx-edit-btn" id="edit-btn-rx10" onclick="toggleEditRx('rx10')">✏️ 편집</button>📋 복사</button>
     </div>
     <div class="rx-body" id="rx10">상기도감염 증상을 동반한 몸살기운으로 내원하신 분으로
 어지러움 증상 및 탈수증상 동반되어 수액요법 하였습니다.
 구역, 구토 및 경구섭취감소 동반되어 수액요법 하였습니다.
 경과관찰 예정에 있습니다.</div>
+    <div class="rx-edit-area" id="edit-area-rx10">
+      <textarea class="rx-textarea" id="textarea-rx10"></textarea>
+      <div class="rx-edit-actions">
+        <button class="btn-save" onclick="saveRx('rx10')">💾 저장</button>
+        <button class="btn-cancel" onclick="cancelEditRx('rx10')">✕ 취소</button>
+        <button class="btn-reset" onclick="resetRx('rx10')">🔄 초기화</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1142,6 +1426,14 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
         </tbody>
       </table>
     </div>
+  </div>
+
+  <div class="notes-section" id="notes-opinion">
+    <div class="notes-header">
+      <div class="notes-title">📝 내 메모 · 추가 내용</div>
+      <button class="btn-add-note" onclick="openNoteModal('opinion', null)">＋ 추가</button>
+    </div>
+    <div id="notes-list-opinion"></div>
   </div>
 </div>
 
@@ -1174,24 +1466,123 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
 </div><!-- /app-wrapper -->
 
 <script>
-// Track bottom nav mapping
+// ===== DEFAULT RX CONTENTS =====
+const DEFAULT_RX = {
+  rx1: `상기환자는 구역, 구토, 복통, 설사, 발열을 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+[법정비급여 주사제 식약처 허가사항 및 치료 소견]
+
+1. 5%포도당주사: 식약처에 정식으로 비급여로 등재된 주사제로 장염, 설사 등으로 인한 탈수 치료를 목적으로 투여함.
+
+2. 아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+3. 뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.`,
+  rx2: `상기환자는 구역, 구토, 복통, 설사를 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+뉴트리헥스주: 장염으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.`,
+  rx3: `상기 환자는 급성기관지염과 동반된 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 전신의 근통, 통증 증상으로 급성 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+지씨엔에이씨주: 식약처로부터 급/만성 기관지염, 인후두염, 부비동염 등에 효능효과를 허가받은 진해거담제로 기침, 객담제거, 급성기관지염 완화를 위해 투여함.
+
+뉴트리헥스주: 감기몸살로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.`,
+  rx4: `상기 환자는 인플루엔자 양성소견으로 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 통증 증상으로 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+페라미플루주: 성인 및 2세이상의 소아의 A형 B형 인플루엔자 바이러스감염증의 신속투여의 식약처 허가사항의 인정비급여제로 인플루엔자 확진 환자의 치료목적으로 사용.
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 몸살로 인한 오한, 발열, 통증 완화 목적으로 투약함.
+
+뉴트리헥스주: 독감으로 인한 경구섭취 감소 및 음식물 섭취의 성분 불균형으로 체내 영양소 손실로 인한 저영양상태를 치료하기 위해 투여함.`,
+  rx5: `상기 환자는 등/허리/옆구리의 대상포진이 발병하여 해당병변에 알레르기성 두드러기가 동반된 피부염과 대상포진 신경통을 주소로 내원하였음. 약물 치료와 연고치료에도 신경통 및 가려움 동반한 피부증상 호전 없음.
+또한 구강근처 헤르페스 피부염이 동반되어 경구로 삼킴이 힘들고 식욕부진이 동반되어 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
+상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
+
+-아래-
+[법정비급여 주사제별 식약처 적응증 및 치료소견]
+
+아세트펜프리믹스주: 식약처로부터 해열/진통/소염제로 효능효과를 허가받은 주사제로 대상포진으로 인한 통증 완화 목적으로 투여함.
+
+히시파겐씨주: 두드러기, 습진, 알러지성 피부질환 헤르페스, 대상포진 등 식약처로부터 각종피부염에 효능효과가 있는 것으로 허가받은 주사제로 바이러스성 피부질환 완화에 효과.
+
+푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
+푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.`,
+  rx6: `상기 환자는 설염/알러지성 피부염 및 심한 두드러기 증상으로 지속적인 약물복용 하였으나 일시적 호전 후에 다시 악화되는 증상 보여 일상생활에 불편과 어려움을 호소함. 상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
+
+-아래-
+[법정(인정)비급여 주사제별 식약처 허가사항 및 치료소견]
+
+히씨파겐씨주: 식약처로부터 두드러기, 습진, 알레르기성 피부질환 등 각종 피부질환 치료에 효능효과를 허가받은 주사제로 피부질환 완화를 위해 투여함.
+
+메가비타식스주: 환자의 주된 증상(접촉피부염, 습진 등의 피부질환)과 여러 상태를 문진(이학적 검사)한 결과 기능의학적으로 볼때 비타민B6의 결핍 또는 대사장애가 관여한다고 추정되어 피부질환 완화를 위해 식약처로부터 비타민B6의 결핍 또는 대사장애가 관여한다고 추정되는 경우 급만성습진, 지루성 습진, 접촉피부염 등 각종 피부질환 치료에 효능효과를 허가받은 메가비타식스주를 투여함.
+
+지씨비타오주: 식약처로부터 판토텐산(비타민B5)의 결핍 또는 대사장애가 관여한다고 추정되는 경우 급만성습진, 접촉피부염 등 피부질환 치료에 효능효과를 허가받은 지씨비타오주를 투여함.
+위 약제들은 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적 검사)한 결과 의학적으로 추정되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 의료법17조1항에 따라 환자를 직접진찰한 의사(주치의)의 고유권한임.`,
+  rx7: `상기 환자는 경추성두통, 그로 인한 양측 어깨 신경통과 근경련증상, 손발저림과 수족냉증 현상, 어지러움과 그로 인한 구역감을 호소로 내원함.
+약물치료에도 호전 없으며 해당 증상들로 인해 일상생활의 제약 및 경구식이의 감소 등의 소모성질환도 함께 의심됨. 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
+
+-아래-
+[비급여 주사제별 치료소견]
+
+지씨징코주: 두통, 어지럼, 말초동맥순환장애(혈액순환장애) 등에 효능효과가 있는 것으로 식약처로부터 허가받은 주사제로 말초동맥순환장애(혈액순환장애) 완화를 위해 투여함.
+(체중 및 증상 고려하여 5ML × 2Ample 투약함)
+
+메가네슘주: 식약처로부터 경련, 자간, 자궁경직방지, 전해질의보급 등에 효능효과를 허가받은 마그네슘제제로 식약처 효능효과에 따라 근경련 및 통증 완화를 위해 투여함. 메가네슘주사는 식약처 효능효과 상 마그네슘의 결핍 수치가 있을 경우에만 처방가능한 약제가 아님.
+
+푸르설타민주: 환자의 증상(신경통 등의 통증)과 여러 상태를 문진(이학적검사)한 결과 기능의학적으로 볼때 비타민B1의 결핍 및 대사장애가 관여한다고 추정되어 통증 완화를 위해 식약처로부터 비타민B1의 결핍 또는 대사장애가 관여한다고 추정되는 경우 신경통, 근육통, 관절통 등 각종통증 치료에 효능효과를 허가받은 푸르설타민주 투여함.
+푸르설타민의 식약처 효능효과에 따르면 결핍수치가 있을 경우에만 처방되는 약제가 아닌, 환자의 상태 및 증상을 문진(이학적검사)한 결과 의학적으로 "추정"되는 경우 의사의 판단으로 처방가능함. 진단 및 처방은 "의료법17조1항"에 따라 환자를 "직접진찰"한 의사(주치의)만 할 수 있음.`,
+  rx8: `* 혈액검사 시행일 20  /  /
+: AST/ALT/GGT (  /  /  )
+
+상기 환자는 경구 섭취 감소, 소화불량, 복통으로 내원하였고 간기능검사 결과 간수치 상승이 확인됨.
+간기능 개선을 위해 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
+이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
+향후 지속적인 치료 및 외래 관찰을 요함.
+
+-아래-
+[법정비급여 주사제 식약처 허가사항 및 치료 소견]
+
+히시파겐씨주 및 라이넥주: 식약처로부터 간질환의 간기능 개선 치료에 효능효과를 허가받은 주사제들로 간세포의 자멸을 억제하고, 간세포의 재생을 촉진함으로써 간의 피로 완화 및 간 기능 개선 치료에 효과적임.`,
+  rx9: `상기환자 20   년 [수술명: 예) 좌측 갑상선 반절제술 및 림프절 곽청술] 시행받은 분으로
+
+이뮨알파원(싸이모신알파) 주사요법은 인체 내 흉선성분의 일종인 thymosin alpha-1을 반복적으로 피하주사하여 수지상세포, helper T세포, NK세포, CD8 세포독성 T세포의 활성도 증가를 유도하는 면역증강요법입니다. thymosin alpha-1은 현재까지 총 70여개 이상의 임상이 시행되었으며, 그 효과가 입증된 제품입니다.
+
+Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 항원 또는 암세포에 대한 직접적인 작용, 이 두 가지 작용을 합니다.
+
+1. 대표적인 암세포를 공격하는 면역세포인 NK cell, Cytotoxic T Cell을 분비시켜 암세포를 공격할 수 있도록 유도합니다.
+
+2. B cell과 T cell의 면역반응을 지휘 총괄하는 T helper cell을 촉진시켜 더 많은 공격세포들과 항체를 생성하게 됩니다.
+
+이상 본원에서 실시한 지씨웰빙이뮨알파원(싸이모신알파) 주사는 상기기전과 이론을 바탕으로 실시되고 있는 암세포 사멸을 목적으로 한 항암치료임을 분명히 밝힙니다.
+
+지씨웰빙이뮨알파원주(=Thymosin-alpha-1): 보건복지부 약제 분류상 "분류번호:429.-기타의 종양치료제"로 식약처에 등재된 주사제로 ("기타의 종양치료제"는 보건복지부 약제 분류상 "종양용약"으로 "항암제"로 분류됨.)`,
+  rx10: `상기도감염 증상을 동반한 몸살기운으로 내원하신 분으로
+어지러움 증상 및 탈수증상 동반되어 수액요법 하였습니다.
+구역, 구토 및 경구섭취감소 동반되어 수액요법 하였습니다.
+경과관찰 예정에 있습니다.`,
+};
+
+
+// ===== PAGE NAV =====
 const pageToBottomNav = {
-  'home': 'bn-home',
-  'basic': 'bn-basic',
-  'antioxidant': 'bn-ao',
-  'vitamins': 'bn-ao',
-  'myers': 'bn-ao',
-  'highdose': 'bn-ao',
-  'fluid': 'bn-ao',
-  'rx-gastro': 'bn-rx',
-  'rx-cold': 'bn-rx',
-  'rx-herpes': 'bn-rx',
-  'rx-skin': 'bn-rx',
-  'rx-cervical': 'bn-rx',
-  'rx-liver': 'bn-rx',
-  'rx-immune': 'bn-rx',
-  'opinion': 'bn-opinion',
-  'drugs': 'bn-drugs',
+  'home': 'bn-home', 'basic': 'bn-basic',
+  'antioxidant': 'bn-ao', 'vitamins': 'bn-ao', 'myers': 'bn-ao',
+  'highdose': 'bn-ao', 'fluid': 'bn-ao',
+  'rx-gastro': 'bn-rx', 'rx-cold': 'bn-rx', 'rx-herpes': 'bn-rx',
+  'rx-skin': 'bn-rx', 'rx-cervical': 'bn-rx', 'rx-liver': 'bn-rx',
+  'rx-immune': 'bn-rx', 'opinion': 'bn-opinion', 'drugs': 'bn-drugs',
 };
 
 function showPage(id, el, title) {
@@ -1200,22 +1591,12 @@ function showPage(id, el, title) {
   const page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   if (el) el.classList.add('active');
-
-  // Update mobile header title
-  if (title) {
-    document.getElementById('mobile-page-title').textContent = title;
-  }
-
-  // Update bottom nav
+  if (title) document.getElementById('mobile-page-title').textContent = title;
   const bnId = pageToBottomNav[id];
   if (bnId) setBottomNav(bnId);
-
-  // Scroll to top on page change
   const mainEl = document.querySelector('.main');
   if (mainEl) mainEl.scrollTo({ top: 0 });
   window.scrollTo({ top: 0 });
-
-  // Close sidebar on mobile
   closeSidebar();
 }
 
@@ -1236,6 +1617,7 @@ function switchTab(group, tabId, btn) {
   }
 }
 
+// ===== COPY RX =====
 function copyRx(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -1244,22 +1626,187 @@ function copyRx(id) {
   const orig = btn.innerHTML;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(() => {
-      btn.innerHTML = '✅ 복사됨!';
-      btn.classList.add('copied');
+      btn.innerHTML = '✅ 복사됨!'; btn.classList.add('copied');
       setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
     });
   } else {
     const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
     btn.innerHTML = '✅ 복사됨!';
     setTimeout(() => { btn.innerHTML = orig; }, 2200);
   }
 }
 
+// ===== EDIT RX SOGYEONSEO =====
+function toggleEditRx(id) {
+  const area = document.getElementById('edit-area-' + id);
+  const ta = document.getElementById('textarea-' + id);
+  const btn = document.getElementById('edit-btn-' + id);
+  const bodyEl = document.getElementById(id);
+  if (area.classList.contains('visible')) {
+    area.classList.remove('visible');
+    btn.classList.remove('editing');
+    btn.textContent = '✏️ 편집';
+  } else {
+    // Load current content into textarea
+    ta.value = bodyEl.innerText;
+    area.classList.add('visible');
+    btn.classList.add('editing');
+    btn.textContent = '✕ 닫기';
+    ta.focus();
+  }
+}
+
+function saveRx(id) {
+  const ta = document.getElementById('textarea-' + id);
+  const bodyEl = document.getElementById(id);
+  const newContent = ta.value;
+  bodyEl.textContent = newContent;
+  // Save to localStorage
+  localStorage.setItem('ivnt_rx_' + id, newContent);
+  // Show edited tag
+  const tag = document.getElementById('edited-tag-' + id);
+  if (tag) tag.classList.add('visible');
+  // Close edit area
+  const area = document.getElementById('edit-area-' + id);
+  const btn = document.getElementById('edit-btn-' + id);
+  area.classList.remove('visible');
+  btn.classList.remove('editing');
+  btn.textContent = '✏️ 편집';
+  showToast('✅ 소견서가 저장되었습니다');
+}
+
+function cancelEditRx(id) {
+  const area = document.getElementById('edit-area-' + id);
+  const btn = document.getElementById('edit-btn-' + id);
+  area.classList.remove('visible');
+  btn.classList.remove('editing');
+  btn.textContent = '✏️ 편집';
+}
+
+function resetRx(id) {
+  if (!confirm('기본 내용으로 초기화하시겠습니까?\n편집된 내용이 삭제됩니다.')) return;
+  const bodyEl = document.getElementById(id);
+  const ta = document.getElementById('textarea-' + id);
+  const original = DEFAULT_RX[id] || '';
+  bodyEl.textContent = original;
+  ta.value = original;
+  localStorage.removeItem('ivnt_rx_' + id);
+  const tag = document.getElementById('edited-tag-' + id);
+  if (tag) tag.classList.remove('visible');
+  showToast('🔄 기본 내용으로 초기화되었습니다');
+}
+
+// ===== NOTES PER SECTION =====
+// Storage: localStorage key = 'ivnt_notes_{pageId}' → JSON array of {id, title, body}
+
+function getNotes(pageId) {
+  try { return JSON.parse(localStorage.getItem('ivnt_notes_' + pageId) || '[]'); } catch { return []; }
+}
+function saveNotes(pageId, notes) {
+  localStorage.setItem('ivnt_notes_' + pageId, JSON.stringify(notes));
+}
+function renderNotes(pageId) {
+  const container = document.getElementById('notes-list-' + pageId);
+  if (!container) return;
+  const notes = getNotes(pageId);
+  if (notes.length === 0) {
+    container.innerHTML = '<div class="note-empty">아직 추가된 메모가 없습니다</div>';
+    return;
+  }
+  container.innerHTML = notes.map((note, idx) => `
+    <div class="note-item" id="note-item-${pageId}-${idx}">
+      ${note.title ? `<div class="note-item-title">📌 ${escHtml(note.title)}</div>` : ''}
+      <div class="note-item-body">${escHtml(note.body)}</div>
+      <div class="note-item-actions">
+        <button class="btn-note-edit" onclick="openNoteModal('${pageId}', ${idx})">✏️ 수정</button>
+        <button class="btn-note-delete" onclick="deleteNote('${pageId}', ${idx})">🗑️ 삭제</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let _noteModalPage = null;
+let _noteModalIdx = null;
+
+function openNoteModal(pageId, idx) {
+  _noteModalPage = pageId;
+  _noteModalIdx = idx;
+  const modal = document.getElementById('noteModal');
+  const titleInput = document.getElementById('noteModalTitle');
+  const bodyInput = document.getElementById('noteModalBody');
+  const heading = document.getElementById('noteModalHeading');
+  if (idx !== null) {
+    const notes = getNotes(pageId);
+    titleInput.value = notes[idx].title || '';
+    bodyInput.value = notes[idx].body || '';
+    heading.textContent = '메모 수정';
+  } else {
+    titleInput.value = '';
+    bodyInput.value = '';
+    heading.textContent = '메모 추가';
+  }
+  modal.classList.add('open');
+  setTimeout(() => titleInput.focus(), 100);
+}
+
+function closeNoteModal() {
+  document.getElementById('noteModal').classList.remove('open');
+}
+
+function saveNoteModal() {
+  const title = document.getElementById('noteModalTitle').value.trim();
+  const body = document.getElementById('noteModalBody').value.trim();
+  if (!body) { alert('내용을 입력해주세요.'); return; }
+  const pageId = _noteModalPage;
+  const notes = getNotes(pageId);
+  if (_noteModalIdx !== null) {
+    notes[_noteModalIdx] = { title, body };
+  } else {
+    notes.push({ title, body });
+  }
+  saveNotes(pageId, notes);
+  renderNotes(pageId);
+  closeNoteModal();
+  showToast(_noteModalIdx !== null ? '✅ 메모가 수정되었습니다' : '✅ 메모가 추가되었습니다');
+}
+
+function deleteNote(pageId, idx) {
+  if (!confirm('이 메모를 삭제하시겠습니까?')) return;
+  const notes = getNotes(pageId);
+  notes.splice(idx, 1);
+  saveNotes(pageId, notes);
+  renderNotes(pageId);
+  showToast('🗑️ 메모가 삭제되었습니다');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  let toast = document.getElementById('app-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'app-toast';
+    toast.style.cssText = `
+      position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
+      background:rgba(15,43,78,0.92); color:#fff; padding:10px 20px;
+      border-radius:20px; font-size:13px; font-weight:600; z-index:9999;
+      pointer-events:none; white-space:nowrap;
+      transition: opacity 0.3s;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+}
+
+// ===== SIDEBAR =====
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const backdrop = document.getElementById('sidebarBackdrop');
@@ -1267,7 +1814,6 @@ function toggleSidebar() {
   backdrop.classList.toggle('active');
   document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
 }
-
 function closeSidebar() {
   const sidebar = document.getElementById('sidebar');
   const backdrop = document.getElementById('sidebarBackdrop');
@@ -1275,16 +1821,48 @@ function closeSidebar() {
   backdrop.classList.remove('active');
   document.body.style.overflow = '';
 }
-
-// Swipe to close sidebar
 let touchStartX = 0;
 document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
 document.addEventListener('touchend', e => {
   const dx = touchStartX - e.changedTouches[0].clientX;
-  if (dx > 60 && document.getElementById('sidebar').classList.contains('open')) {
-    closeSidebar();
-  }
+  if (dx > 60 && document.getElementById('sidebar').classList.contains('open')) closeSidebar();
 }, { passive: true });
+
+// ===== INIT: Load saved RX & notes on startup =====
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore edited sogyeonseo
+  for (let i = 1; i <= 10; i++) {
+    const id = 'rx' + i;
+    const saved = localStorage.getItem('ivnt_rx_' + id);
+    if (saved) {
+      const bodyEl = document.getElementById(id);
+      if (bodyEl) bodyEl.textContent = saved;
+      const tag = document.getElementById('edited-tag-' + id);
+      if (tag) tag.classList.add('visible');
+    }
+  }
+  // Render notes for all pages
+  const notePages = ['rx-gastro','rx-cold','rx-herpes','rx-skin','rx-cervical','rx-liver','rx-immune','opinion'];
+  notePages.forEach(p => renderNotes(p));
+});
+
+// Note modal keyboard close
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeNoteModal();
+});
 </script>
+<!-- NOTE MODAL -->
+<div class="note-modal-bg" id="noteModal" onclick="if(event.target===this)closeNoteModal()">
+  <div class="note-modal">
+    <div class="note-modal-title" id="noteModalHeading">메모 추가</div>
+    <input type="text" id="noteModalTitle" placeholder="제목 (선택사항)" maxlength="80">
+    <textarea id="noteModalBody" placeholder="내용을 입력하세요...&#10;약물 추가 정보, 주의사항, 개인 메모 등을 자유롭게 작성하세요." rows="6"></textarea>
+    <div class="note-modal-actions">
+      <button class="btn-cancel" onclick="closeNoteModal()">취소</button>
+      <button class="btn-save" onclick="saveNoteModal()">💾 저장</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
