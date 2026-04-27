@@ -238,11 +238,21 @@ body {
   border-radius: 12px; padding: 18px; margin-bottom: 18px;
 }
 .rx-header {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
-.rx-title { font-size: 15px; font-weight: 700; color: var(--blue); }
-.rx-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.rx-header-left {
+  display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1;
+}
+.rx-title { font-size: 15px; font-weight: 700; color: var(--blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+.rx-btn-group {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
 .rx-body {
   background: #f5f8ff; border-radius: 8px; padding: 14px 16px;
   font-size: 12.5px; line-height: 1.9; white-space: pre-line;
@@ -251,13 +261,13 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 .copy-btn {
-  background: var(--accent); color: #fff; border: none;
-  padding: 8px 16px; border-radius: 8px; font-size: 12px;
-  cursor: pointer; font-weight: 600; white-space: nowrap; flex-shrink: 0;
+  background: var(--teal); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 8px; font-size: 12px;
+  cursor: pointer; font-weight: 700; white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
-  min-height: 36px;
+  min-height: 36px; display: flex; align-items: center; gap: 4px;
 }
-.copy-btn:hover { background: var(--blue); }
+.copy-btn:hover { background: #0e7a6a; }
 .copy-btn:active { transform: scale(0.96); }
 .copy-btn.copied { background: var(--teal); }
 
@@ -415,9 +425,11 @@ body {
   .version-tag { padding-bottom: 24px; }
 
   /* Rx header wrap */
-  .rx-header { gap: 8px; }
-  .rx-title { font-size: 14px; width: 100%; }
-  .rx-header > .copy-btn { margin-left: auto; }
+  .rx-header { gap: 8px; flex-wrap: wrap; }
+  .rx-header-left { min-width: 0; }
+  .rx-title { font-size: 13px; }
+  .rx-btn-group { margin-left: auto; }
+  .rx-edit-btn, .copy-btn { padding: 7px 11px; font-size: 11px; min-height: 34px; }
 
   /* Tab bar touch friendly */
   .tab-btn { padding: 10px 14px; font-size: 12px; }
@@ -441,14 +453,14 @@ body {
 
 /* ====== EDIT / NOTES FEATURES ====== */
 .rx-edit-btn {
-  background: none; border: 1.5px solid var(--accent);
-  color: var(--accent); padding: 7px 13px; border-radius: 8px;
-  font-size: 12px; cursor: pointer; font-weight: 600;
-  white-space: nowrap; flex-shrink: 0;
+  background: none; border: 1.5px solid var(--orange);
+  color: var(--orange); padding: 8px 13px; border-radius: 8px;
+  font-size: 12px; cursor: pointer; font-weight: 700;
+  white-space: nowrap;
   -webkit-tap-highlight-color: transparent; min-height: 36px;
-  transition: all 0.15s;
+  transition: all 0.15s; display: flex; align-items: center; gap: 3px;
 }
-.rx-edit-btn:hover { background: var(--accent); color: #fff; }
+.rx-edit-btn:hover { background: var(--orange); color: #fff; }
 .rx-edit-btn.editing { background: var(--orange); border-color: var(--orange); color: #fff; }
 
 .rx-edit-area {
@@ -483,10 +495,10 @@ body {
 }
 .rx-edited-tag {
   display: none; font-size: 10px; color: var(--orange);
-  background: var(--light-orange); padding: 2px 8px;
-  border-radius: 10px; font-weight: 700; flex-shrink: 0;
+  background: var(--light-orange); padding: 3px 8px;
+  border-radius: 10px; font-weight: 700;
 }
-.rx-edited-tag.visible { display: inline-block; }
+.rx-edited-tag.visible { display: inline-flex; align-items: center; }
 
 /* Notes section */
 .notes-section {
@@ -960,11 +972,15 @@ body {
   </div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 장염 소견서 (표준형)</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">수액요법</span></div>
-      <button class="copy-btn" onclick="copyRx('rx1')">
-      <span class="rx-edited-tag" id="edited-tag-rx1">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx1" onclick="toggleEditRx('rx1')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 장염 소견서 (표준형)</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">수액요법</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx1">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx1" onclick="toggleEditRx('rx1')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx1')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx1">상기환자는 구역, 구토, 복통, 설사, 발열을 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
 이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
@@ -989,11 +1005,15 @@ body {
   </div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 용종절제 후 처방 (당일)</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
-      <button class="copy-btn" onclick="copyRx('rx2')">
-      <span class="rx-edited-tag" id="edited-tag-rx2">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx2" onclick="toggleEditRx('rx2')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 용종절제 후 처방 (당일)</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx2">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx2" onclick="toggleEditRx('rx2')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx2')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx2">상기환자는 구역, 구토, 복통, 설사를 동반한 장염 증세가 지속되고 식욕 부진으로 인한 탈진 상태로 정상적인 식이 및 활동이 어려운 상태로 생각되어 수액 및 주사 투여가 의학적으로 필요할 것으로 판단하여 아래 주사제 투여함.
 이에 식약처로부터 상기 병명의 치료에 각각 허가받은 아래 주사제 및 수액을 투여함.
@@ -1034,13 +1054,17 @@ body {
       <div class="drug-card"><div class="drug-name">뉴트리헥스주</div><div class="drug-dose">1 vial</div><div class="drug-indication">경구섭취 감소로 인한 저영양상태 치료</div></div>
     </div>
     <div class="rx-card">
-      <div class="rx-header">
+    <div class="rx-header">
+      <div class="rx-header-left">
         <div class="rx-title">📄 감기/상기도 감염 소견서</div>
         <div class="rx-badges"><span class="badge badge-blue">비급여</span></div>
-        <button class="copy-btn" onclick="copyRx('rx3')">
-      <span class="rx-edited-tag" id="edited-tag-rx3">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx3" onclick="toggleEditRx('rx3')">✏️ 편집</button>📋 복사</button>
       </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx3">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx3" onclick="toggleEditRx('rx3')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx3')">📋 복사</button>
+      </div>
+    </div>
       <div class="rx-body" id="rx3">상기 환자는 급성기관지염과 동반된 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 전신의 근통, 통증 증상으로 급성 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
 
 -아래-
@@ -1068,13 +1092,17 @@ body {
       <div class="drug-card"><div class="drug-name">뉴트리헥스주</div><div class="drug-dose">1 vial</div><div class="drug-indication">독감으로 인한 저영양상태 치료</div></div>
     </div>
     <div class="rx-card">
-      <div class="rx-header">
+    <div class="rx-header">
+      <div class="rx-header-left">
         <div class="rx-title">📄 인플루엔자 소견서</div>
         <div class="rx-badges"><span class="badge badge-blue">인정비급여</span></div>
-        <button class="copy-btn" onclick="copyRx('rx4')">
-      <span class="rx-edited-tag" id="edited-tag-rx4">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx4" onclick="toggleEditRx('rx4')">✏️ 편집</button>📋 복사</button>
       </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx4">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx4" onclick="toggleEditRx('rx4')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx4')">📋 복사</button>
+      </div>
+    </div>
       <div class="rx-body" id="rx4">상기 환자는 인플루엔자 양성소견으로 몸살, 발열, 감기로 인해 삭신이 쑤시는 등의 통증 증상으로 소모성질환도 함께 의심됨. 인후통의 증가로 경구로 삼킴이 힘들고 식욕부진으로 인해 이학적검사상 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
 
 -아래-
@@ -1116,11 +1144,15 @@ body {
   <div class="info-box yellow" style="margin-bottom:14px;"><strong>⚖️ 푸르설타민주 처방 근거</strong>식약처 효능효과: 결핍 수치 없어도 증상 및 이학적검사로 <strong>"추정"</strong>되는 경우 의사 판단으로 처방 가능<br>(의료법 17조 1항: 직접 진찰한 의사의 고유 처방 권한)</div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 대상포진 소견서</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-red">신경통</span></div>
-      <button class="copy-btn" onclick="copyRx('rx5')">
-      <span class="rx-edited-tag" id="edited-tag-rx5">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx5" onclick="toggleEditRx('rx5')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 대상포진 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-red">신경통</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx5">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx5" onclick="toggleEditRx('rx5')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx5')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx5">상기 환자는 등/허리/옆구리의 대상포진이 발병하여 해당병변에 알레르기성 두드러기가 동반된 피부염과 대상포진 신경통을 주소로 내원하였음. 약물 치료와 연고치료에도 신경통 및 가려움 동반한 피부증상 호전 없음.
 또한 구강근처 헤르페스 피부염이 동반되어 경구로 삼킴이 힘들고 식욕부진이 동반되어 탈진/탈수가 의심되는 상태로 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단됨.
@@ -1164,11 +1196,15 @@ body {
   </div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 피부염/두드러기 소견서</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-purple">피부질환</span></div>
-      <button class="copy-btn" onclick="copyRx('rx6')">
-      <span class="rx-edited-tag" id="edited-tag-rx6">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx6" onclick="toggleEditRx('rx6')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 피부염/두드러기 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-purple">피부질환</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx6">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx6" onclick="toggleEditRx('rx6')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx6')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx6">상기 환자는 설염/알러지성 피부염 및 심한 두드러기 증상으로 지속적인 약물복용 하였으나 일시적 호전 후에 다시 악화되는 증상 보여 일상생활에 불편과 어려움을 호소함. 상기의 진단하에 식약처로부터 상기병명의 치료에 각각 허가받은 아래 주사제 및 수액 투여함. 지속적인 치료 및 외래관찰 요함.
 
@@ -1212,11 +1248,15 @@ body {
   <div class="info-box blue" style="margin-bottom:14px;"><strong>📌 지씨징코주 용량 기준</strong>체중 및 증상 고려하여 5ml × 1~2 ample 투약 — 증상이 심할수록 2 ample 적용</div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 경추통/순환장애/신경통 소견서</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-orange">신경통</span></div>
-      <button class="copy-btn" onclick="copyRx('rx7')">
-      <span class="rx-edited-tag" id="edited-tag-rx7">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx7" onclick="toggleEditRx('rx7')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 경추통/순환장애/신경통 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-orange">신경통</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx7">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx7" onclick="toggleEditRx('rx7')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx7')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx7">상기 환자는 경추성두통, 그로 인한 양측 어깨 신경통과 근경련증상, 손발저림과 수족냉증 현상, 어지러움과 그로 인한 구역감을 호소로 내원함.
 약물치료에도 호전 없으며 해당 증상들로 인해 일상생활의 제약 및 경구식이의 감소 등의 소모성질환도 함께 의심됨. 의학적으로 주사제 및 수액 투여가 필요할 것으로 판단되어 상기진단 하에 식약처로부터 상기병명의 치료에 각각 효능효과를 허가받은 아래 주사제 및 수액 투여함. 외래관찰 요함.
@@ -1260,11 +1300,15 @@ body {
   <div class="info-box yellow" style="margin-bottom:14px;"><strong>📋 혈액검사 결과 기재 필요</strong>검사 시행일: 20  /  /  &nbsp;&nbsp;&nbsp; AST / ALT / GGT : (  /  /  )</div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 간기능 개선 소견서</div>
-      <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">간질환</span></div>
-      <button class="copy-btn" onclick="copyRx('rx8')">
-      <span class="rx-edited-tag" id="edited-tag-rx8">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx8" onclick="toggleEditRx('rx8')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 간기능 개선 소견서</div>
+        <div class="rx-badges"><span class="badge badge-blue">비급여</span><span class="badge badge-teal">간질환</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx8">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx8" onclick="toggleEditRx('rx8')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx8')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx8">* 혈액검사 시행일 20  /  /
 : AST/ALT/GGT (  /  /  )
@@ -1327,11 +1371,15 @@ body {
   </div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 싸이모신 알파 소견서</div>
-      <div class="rx-badges"><span class="badge badge-purple">항암보조</span></div>
-      <button class="copy-btn" onclick="copyRx('rx9')">
-      <span class="rx-edited-tag" id="edited-tag-rx9">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx9" onclick="toggleEditRx('rx9')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 싸이모신 알파 소견서</div>
+        <div class="rx-badges"><span class="badge badge-purple">항암보조</span></div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx9">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx9" onclick="toggleEditRx('rx9')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx9')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx9">상기환자 20   년 [수술명: 예) 좌측 갑상선 반절제술 및 림프절 곽청술] 시행받은 분으로
 
@@ -1381,10 +1429,14 @@ Thymosin-alpha-1이 투여된 경우에 크게 인체에 대한 면역작용과 
   </div>
   <div class="rx-card">
     <div class="rx-header">
-      <div class="rx-title">📄 수액요법 간단 소견 (범용)</div>
-      <button class="copy-btn" onclick="copyRx('rx10')">
-      <span class="rx-edited-tag" id="edited-tag-rx10">✏️ 수정됨</span>
-      <button class="rx-edit-btn" id="edit-btn-rx10" onclick="toggleEditRx('rx10')">✏️ 편집</button>📋 복사</button>
+      <div class="rx-header-left">
+        <div class="rx-title">📄 수액요법 간단 소견 (범용)</div>
+      </div>
+      <div class="rx-btn-group">
+        <span class="rx-edited-tag" id="edited-tag-rx10">✏️ 수정됨</span>
+        <button class="rx-edit-btn" id="edit-btn-rx10" onclick="toggleEditRx('rx10')">✏️ 편집</button>
+        <button class="copy-btn" onclick="copyRx('rx10')">📋 복사</button>
+      </div>
     </div>
     <div class="rx-body" id="rx10">상기도감염 증상을 동반한 몸살기운으로 내원하신 분으로
 어지러움 증상 및 탈수증상 동반되어 수액요법 하였습니다.
