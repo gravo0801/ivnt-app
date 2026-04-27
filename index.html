@@ -309,8 +309,8 @@ body {
   border-bottom: 2px solid var(--border);
   overflow-x: auto; scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
 }
+
 .tab-bar::-webkit-scrollbar { display: none; }
 .tab-btn {
   padding: 10px 16px; border: none; background: none; cursor: pointer;
@@ -437,8 +437,9 @@ body {
   .rx-btn-group { margin-left: auto; }
   .rx-edit-btn, .copy-btn { padding: 7px 11px; font-size: 11px; min-height: 34px; }
 
-  /* Tab bar touch friendly */
-  .tab-btn { padding: 10px 14px; font-size: 12px; }
+  /* Tab bar touch friendly - wrap on mobile to avoid scroll conflict */
+  .tab-bar { flex-wrap: wrap; overflow-x: visible; }
+  .tab-btn { padding: 10px 12px; font-size: 12px; flex: 1; min-width: 80px; text-align: center; }
 
   /* Table small hint */
   .tbl-wrap::after {
@@ -1917,84 +1918,61 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeNoteModal();
 });
-// ===== MOBILE TOUCH FIX =====
-// Fix tab buttons - use touchend to bypass iOS click delay
-function initTouchTabs() {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    let startX = 0, startY = 0, moved = false;
-    btn.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      moved = false;
-    }, { passive: true });
-    btn.addEventListener('touchmove', e => {
-      const dx = Math.abs(e.touches[0].clientX - startX);
-      const dy = Math.abs(e.touches[0].clientY - startY);
-      if (dx > 8 || dy > 8) moved = true;
-    }, { passive: true });
-    btn.addEventListener('touchend', e => {
-      if (moved) return;
-      e.preventDefault();
-      btn.click();
-    });
+// ===== MOBILE TOUCH FIX (v2 - direct eval approach) =====
+function _addTouchClick(el, opts) {
+  opts = opts || {};
+  let startX = 0, startY = 0, moved = false;
+
+  el.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    moved = false;
+    if (opts.scale) el.style.transform = 'scale(0.97)';
+  }, { passive: true });
+
+  el.addEventListener('touchmove', function(e) {
+    if (Math.abs(e.touches[0].clientX - startX) > 10 ||
+        Math.abs(e.touches[0].clientY - startY) > 10) {
+      moved = true;
+      if (opts.scale) el.style.transform = '';
+    }
+  }, { passive: true });
+
+  el.addEventListener('touchend', function(e) {
+    if (opts.scale) el.style.transform = '';
+    if (moved) return;
+    // Prevent ghost click
+    e.preventDefault();
+    // Execute onclick directly via Function (more reliable than btn.click() on mobile)
+    const oc = el.getAttribute('onclick');
+    if (oc) {
+      try { (new Function('event', oc)).call(el, e); }
+      catch(err) { console.warn('touch click err:', err); }
+    }
+  }, { passive: false }); // non-passive so preventDefault works
+}
+
+function initAllMobileTouchFix() {
+  // Tab buttons
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    _addTouchClick(btn, {});
+  });
+  // Quick buttons on home
+  document.querySelectorAll('.quick-btn').forEach(function(btn) {
+    _addTouchClick(btn, { scale: true });
+  });
+  // Sidebar nav-item divs
+  document.querySelectorAll('.nav-item').forEach(function(item) {
+    _addTouchClick(item, {});
+  });
+  // Bottom nav buttons (belt-and-suspenders)
+  document.querySelectorAll('.bottom-nav-item').forEach(function(btn) {
+    _addTouchClick(btn, {});
   });
 }
 
-// Fix quick-btn buttons
-function initTouchQuickBtns() {
-  document.querySelectorAll('.quick-btn').forEach(btn => {
-    let startX = 0, startY = 0, moved = false;
-    btn.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      moved = false;
-      btn.style.transform = 'scale(0.97)';
-    }, { passive: true });
-    btn.addEventListener('touchmove', e => {
-      const dx = Math.abs(e.touches[0].clientX - startX);
-      const dy = Math.abs(e.touches[0].clientY - startY);
-      if (dx > 8 || dy > 8) {
-        moved = true;
-        btn.style.transform = '';
-      }
-    }, { passive: true });
-    btn.addEventListener('touchend', e => {
-      btn.style.transform = '';
-      if (moved) return;
-      e.preventDefault();
-      btn.click();
-    });
-  });
-}
-
-// Fix nav-item divs (they're divs, not buttons — need explicit touch handling)
-function initTouchNavItems() {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    let startX = 0, startY = 0, moved = false;
-    item.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      moved = false;
-    }, { passive: true });
-    item.addEventListener('touchmove', e => {
-      if (Math.abs(e.touches[0].clientX - startX) > 8 ||
-          Math.abs(e.touches[0].clientY - startY) > 8) moved = true;
-    }, { passive: true });
-    item.addEventListener('touchend', e => {
-      if (moved) return;
-      e.preventDefault();
-      // Trigger the onclick
-      const oc = item.getAttribute('onclick');
-      if (oc) { try { eval(oc); } catch(err) {} }
-    });
-  });
-}
-
-// Init all on load
-document.addEventListener('DOMContentLoaded', () => {
-  initTouchTabs();
-  initTouchQuickBtns();
-  initTouchNavItems();
+document.addEventListener('DOMContentLoaded', function() {
+  initAllMobileTouchFix();
 });
 
 </script>
