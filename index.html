@@ -137,8 +137,9 @@ body {
   z-index: 190;
   opacity: 0;
   transition: opacity 0.3s;
+  pointer-events: none;
 }
-.sidebar-backdrop.active { opacity: 1; }
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
 
 /* ====== BOTTOM NAV (mobile) ====== */
 .bottom-nav {
@@ -376,7 +377,8 @@ body {
     box-shadow: 4px 0 20px rgba(0,0,0,0.3);
   }
   .sidebar.open { transform: translateX(0); }
-  .sidebar-backdrop { display: block; position: fixed; }
+  .sidebar-backdrop { display: block; position: fixed; pointer-events: none; }
+  .sidebar-backdrop.active { pointer-events: auto; }
 
   /* Main adjusts for header + bottom nav */
   .main {
