@@ -672,13 +672,22 @@ body {
     <div class="sb-item" onclick="go('rx-immune',this,'면역증강')"><span class="sb-ico">◌</span>면역증강 (싸이모신)</div>
   </div>
   <div class="sb-sec">
+    <div class="sb-sec-label">Knowledge+</div>
+    <div class="sb-item" onclick="go('ala',this,'알파리포산 (ALA)')"><span class="sb-ico">◌</span>알파리포산 (ALA)</div>
+    <div class="sb-item" onclick="go('selenium',this,'셀레늄 주사')"><span class="sb-ico">◌</span>셀레늄 주사</div>
+    <div class="sb-item" onclick="go('mineral5',this,'미네랄 5종 (Multi-Blue 5)')"><span class="sb-ico">◌</span>미네랄 5종 (Multi-Blue 5)</div>
+    <div class="sb-item" onclick="go('mineral9',this,'미네랄 9종 (Addamel N)')"><span class="sb-ico">◌</span>미네랄 9종 (Addamel N)</div>
+    <div class="sb-item" onclick="go('drug-muggers',this,'Drug Muggers')"><span class="sb-ico">⚡</span>Drug Muggers</div>
+    <div class="sb-item" onclick="go('cheatsheet',this,'진료실 Cheat Sheet')"><span class="sb-ico">⊡</span>진료실 Cheat Sheet</div>
+  </div>
+  <div class="sb-sec">
     <div class="sb-sec-label">Reference</div>
     <div class="sb-item" onclick="go('opinion',this,'소견서 원칙')"><span class="sb-ico">◌</span>소견서 원칙</div>
     <div class="sb-item" onclick="go('drugs',this,'약물 전체 목록')"><span class="sb-ico">◌</span>약물 전체 목록</div>
     <div class="sb-item" onclick="go('recipe',this,'EMR 처방 레시피')"><span class="sb-ico">◌</span>EMR 처방 레시피</div>
     <div class="sb-item" onclick="go('emergency',this,'돌발상황 대처 가이드')"><span class="sb-ico">⚠</span>돌발상황 대처 가이드</div>
   </div>
-  <div class="sb-ver">v1.4 · IVNT Clinical Guide</div>
+  <div class="sb-ver">v1.5 · IVNT Clinical Guide</div>
 </nav>
 
 <!-- MAIN -->
@@ -1298,6 +1307,295 @@ body {
   </div>
 </div>
 
+
+<!-- ALA PAGE -->
+<div id="page-ala" class="page">
+  <div class="ph"><div class="ph-eyebrow">Knowledge+ / 01</div><div class="ph-title">알파리포산 (Alpha-Lipoic Acid)</div><div class="ph-sub">Super Antioxidant — 항산화제의 항산화제</div></div>
+  <div class="ib ib-indigo" style="margin-bottom:20px;"><strong>수용성 + 지용성 모두 작용하는 유일한 항산화제</strong>다른 항산화제(Vit C, E, 글루타치온)를 재생시키는 "항산화 순환의 핵심"</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl"><span class="dot"></span>핵심 작용 기전</div>
+      <div class="step"><div class="step-num">①</div><div class="step-text">미토콘드리아 ETC에서 생산되는 <strong>ROS 직접 제거</strong></div></div>
+      <div class="step"><div class="step-num">②</div><div class="step-text">Vit C, E, 글루타치온 <strong>재생</strong> → 항산화 순환 강화</div></div>
+      <div class="step"><div class="step-num">③</div><div class="step-text">혈뇌장벽 통과 → <strong>중추신경 보호</strong></div></div>
+      <div class="step"><div class="step-num">④</div><div class="step-text"><strong>인슐린 감수성↑</strong>, 당뇨 합병증 예방</div></div>
+      <div class="step"><div class="step-num">⑤</div><div class="step-text">Cu, Fe 매개 산화스트레스 억제 (메탈 킬레이션)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl"><span class="dot" style="background:var(--emerald)"></span>주요 적응증</div>
+      <div class="drug-card"><div class="drug-name">당뇨병성 말초신경병증 ★</div><div class="drug-dose">600mg / 100~250mL</div><div class="drug-ind">가장 유력한 근거. 저림·통증·감각이상 개선</div></div>
+      <div class="drug-card"><div class="drug-name">대사증후군</div><div class="drug-dose">300mg / 100mL</div><div class="drug-ind">CRP, IL-6, TNF-α↓ — 염증지표 개선 근거 누적</div></div>
+      <div class="drug-card"><div class="drug-name">항암 IVC 직전 보조</div><div class="drug-dose">300~600mg</div><div class="drug-ind">IVC 효과 증강 보조. 종양내과 협의 필수.</div></div>
+      <div class="drug-card"><div class="drug-name">인지기능 저하 (보조)</div><div class="drug-dose">150~300mg</div><div class="drug-ind">다발성 경화증, NAFLD 보조</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>용량별 투여 가이드</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>적응증</th><th>용량</th><th>기초수액</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>일반 항산화</td><td>25~50mg (1~2V)</td><td>N/S 50~100mL</td><td>웰빙·항노화</td></tr>
+        <tr><td>일반 증량</td><td>300mg</td><td>N/S 100~250mL</td><td>대사증후군</td></tr>
+        <tr><td>당뇨 다발신경증 ★</td><td>300~600mg</td><td>N/S 100~250mL</td><td>분당 50mg 초과 금지</td></tr>
+        <tr><td>암환자 IVC 직전</td><td>300~600mg</td><td>포도당 수액 (당뇨 시 N/S)</td><td>종양내과 협의</td></tr>
+      </tbody>
+    </table></div>
+    <div class="ib ib-amber" style="margin-top:12px;"><strong>⚠️ 투여 속도 주의</strong>분당 50mg 초과 시 두통·호흡곤란 발생 가능. 차광하면 6시간 안정. 당뇨/암 환자는 반드시 N/S 사용.</div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl"><span class="dot" style="background:var(--amber)"></span>주요 주의사항</div>
+      <div class="ib ib-rose"><strong>B1 결핍 시 부작용↑</strong>비타민 B1이 결핍된 상태에서 ALA 투여 시 부작용 증가. B1 동반 투여 권장.</div>
+      <div class="ib ib-amber" style="margin-top:8px;"><strong>저혈당 가능성</strong>당뇨 환자 혈당 모니터링 필수. 임산부·수유부 안정성 미확립.</div>
+    </div>
+    <div class="card">
+      <div class="card-ttl"><span class="dot"></span>한국 처방 상품명</div>
+      <div class="drug-card"><div class="drug-name">치옥타시드주</div><div class="drug-dose">600mg / 24mL</div><div class="drug-ind">정맥용 표준제제 — 가장 많이 사용</div></div>
+      <div class="drug-card"><div class="drug-name">치오큐주</div><div class="drug-dose">300mg</div><div class="drug-ind">증량 목적 사용</div></div>
+      <div class="drug-card"><div class="drug-name">알파리포산주</div><div class="drug-dose">다양한 함량</div><div class="drug-ind">제네릭 제품</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--rose)"></span>심평·실손 주의 & Refer</div>
+    <div class="cmp">
+      <div class="ib ib-amber"><strong>심평원 포인트</strong>당뇨병성 다발신경병증(E11.42, G63.2) 진단 시 일부 급여 영역 존재 (경구제 기준). 정맥 ALA는 비급여. 단순 피로·항산화 단일 사유는 삭감 위험.</div>
+      <div class="ib ib-sky"><strong>Refer 기준</strong>신경학적 증상 진행·보행장애 → 신경과<br>당뇨 합병증 관리 필요 시 → 내분비내과</div>
+    </div>
+  </div>
+</div>
+
+<!-- SELENIUM PAGE -->
+<div id="page-selenium" class="page">
+  <div class="ph"><div class="ph-eyebrow">Knowledge+ / 02</div><div class="ph-title">셀레늄 (Selenium) 주사</div><div class="ph-sub">GPx의 핵심 구성성분 — 강력 항산화 미네랄</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl"><span class="dot"></span>셀레늄 분류</div>
+      <div class="drug-card"><div class="drug-name">무기 셀레늄</div><div class="drug-dose">Selenite (Na₂SeO₃), Selenate</div><div class="drug-ind">⚠️ 비타민C와 직접 혼합 절대 금지 → 적색 침전(원소 Se) 생성</div></div>
+      <div class="drug-card"><div class="drug-name">유기 셀레늄</div><div class="drug-dose">Selenocysteine, Selenomethionine</div><div class="drug-ind">✅ 비타민C와 동시 투여 무방</div></div>
+      <div class="drug-card"><div class="drug-name">셀레노단백질</div><div class="drug-dose">GPx, Thioredoxin reductase, Iodothyronine deiodinase</div><div class="drug-ind">체내 핵심 항산화 효소 구성</div></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl"><span class="dot" style="background:var(--emerald)"></span>용량별 목적</div>
+      <div class="step"><div class="step-num" style="background:var(--slate-lt);color:var(--slate)">100</div><div class="step-text"><strong>100 ㎍</strong> — 결핍 보충</div></div>
+      <div class="step"><div class="step-num" style="background:var(--sky-lt);color:#0369a1">200</div><div class="step-text"><strong>200 ㎍</strong> — 항산화 <span class="badge b-sky">★ 일반 임상</span></div></div>
+      <div class="step"><div class="step-num" style="background:var(--amber-lt);color:#92400e">500</div><div class="step-text"><strong>500 ㎍</strong> — 적극 항산화</div></div>
+      <div class="step"><div class="step-num" style="background:var(--rose-lt);color:var(--rose)">1000</div><div class="step-text"><strong>1,000 ㎍</strong> — 항암 (전문 영역)</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>적응증 & 진료실 활용</div>
+    <div class="g2">
+      <div>
+        <div class="drug-card"><div class="drug-name">갑상선 자가면역</div><div class="drug-ind">Hashimoto 갑상선염, 항-TPO 항체 상승 환자. 셀레늄 200㎍/일로 항체↓ 근거</div></div>
+        <div class="drug-card"><div class="drug-name">면역저하·반복감염</div><div class="drug-ind">GPx 활성 → 면역세포 보호. COVID-19 회복기 보조 연구 진행 중</div></div>
+      </div>
+      <div>
+        <div class="drug-card"><div class="drug-name">항암 보조</div><div class="drug-ind">1,000 ㎍ 고용량 항암 적용 — 전문 영역, 종양내과 협의 필수</div></div>
+        <div class="drug-card"><div class="drug-name">항노화·항산화</div><div class="drug-ind">비타민 E의 2,000배 항산화력 (GPx 경로). 200㎍ 일반 처방</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--rose)"></span>핵심 주의사항</div>
+    <div class="ib ib-rose"><strong>❌ 절대 혼합 금지 — 무기 셀레늄 + 비타민C</strong>적색 침전(원소 Se) 발생. 동시 투여 필요 시: 1시간 간격 투여 OR 아미노산 수액에 분리하여 투여</div>
+    <div class="cmp" style="margin-top:12px;">
+      <div class="ib ib-amber"><strong>심평원 포인트</strong>단순 결핍은 검사 근거 부족 → 비급여 운용. 셀레늄 혈청 농도 측정은 보험 미적용.</div>
+      <div class="ib ib-sky"><strong>Refer 기준</strong>갑상선 결절·기능이상 → 내분비내과<br>셀레늄 중독 의심(호흡 마늘냄새, 피부발진) → 응급실</div>
+    </div>
+    <div class="ib ib-indigo" style="margin-top:12px;"><strong>한국 처방 상품명</strong>셀레나제주 (Selenase) 100㎍/2mL — 가장 범용 · 셀레늄주(아셀렌산나트륨)<br>식약처 적응증: 영양공급으로 보충될 수 없는 셀레늄 결핍. 표준 100㎍/일, 필요시 200㎍/일 증량.</div>
+  </div>
+</div>
+
+<!-- MINERAL 5 PAGE -->
+<div id="page-mineral5" class="page">
+  <div class="ph"><div class="ph-eyebrow">Knowledge+ / 03</div><div class="ph-title">미네랄 5종 — Multi-Blue 5</div><div class="ph-sub">셀레늄·아연·구리·망간·크롬 복합 주사</div></div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>구성 성분 (1 vial 10mL)</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>성분</th><th>용량</th><th>핵심 역할</th><th>결핍 시</th></tr></thead>
+      <tbody>
+        <tr><td><strong>셀레늄 (Se)</strong></td><td>200 ㎍</td><td>GPx 활성, 강력 항산화 (Vit E의 2,000배)</td><td>심근증, 골격근 질환</td></tr>
+        <tr><td><strong>아연 (Zn)</strong></td><td>10 mg</td><td>상처치유, 면역, 효소 200종↑</td><td>탈모·면역↓·불임·성장지연</td></tr>
+        <tr><td><strong>구리 (Cu)</strong></td><td>4 mg</td><td>SOD, 콜라겐/엘라스틴 합성</td><td>골막하출혈, 부정맥</td></tr>
+        <tr><td><strong>망간 (Mn)</strong></td><td>1 mg</td><td>Mn-SOD, 세포 재생</td><td>적혈구 감소</td></tr>
+        <tr><td><strong>크롬 (Cr)</strong></td><td>40 ㎍</td><td>Glucose tolerance factor, 당대사</td><td>내당능장애</td></tr>
+      </tbody>
+    </table></div>
+    <div class="ib ib-indigo" style="margin-top:12px;"><strong>사용 방법</strong>아미노산 수액 100~250mL에 희석 (Buffer 역할 + 흡수↑). 미네랄은 소장에서 자동조절, 과량은 배설.</div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--emerald)"></span>권장 프로토콜 (적응증별)</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>적응증</th><th>기간</th><th>용법</th></tr></thead>
+      <tbody>
+        <tr><td><strong>수술 전후</strong></td><td>수술 1일 전 ~ 수술 후 3일</td><td>1V/일, 수술 당일 2V</td></tr>
+        <tr><td><strong>화학·방사선 치료 중</strong></td><td>1개월</td><td>1V × 주2회</td></tr>
+        <tr><td></td><td>2개월~</td><td>1V × 주1회</td></tr>
+        <tr><td><strong>중환자 (부종/외상)</strong></td><td>1~3일</td><td>2V × 3일</td></tr>
+        <tr><td></td><td>4~8주</td><td>1V × 주1회</td></tr>
+        <tr><td><strong>항산화 요법</strong></td><td>5주</td><td>1V × 주2회</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- MINERAL 9 PAGE -->
+<div id="page-mineral9" class="page">
+  <div class="ph"><div class="ph-eyebrow">Knowledge+ / 04</div><div class="ph-title">미네랄 9종 — Addamel N</div><div class="ph-sub">국내 유일 9종 미량원소 주사제 (Fresenius Kabi)</div></div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>구성 성분 (10mL / 1 Ampoule)</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>성분</th><th>함량</th><th>역할</th><th>결핍 증상</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cr (크롬)</strong></td><td>10 ㎍</td><td>인슐린 활성</td><td>내당능장애</td></tr>
+        <tr><td><strong>Cu (구리)</strong></td><td>1.3 mg</td><td>SOD, 콜라겐</td><td>골막하출혈, 부정맥</td></tr>
+        <tr><td><strong>Mn (망간)</strong></td><td>0.27 mg</td><td>항산화</td><td>적혈구 감소</td></tr>
+        <tr><td><strong>Zn (아연)</strong></td><td>6.5 mg</td><td>효소 200+, 핵산</td><td>탈모·면역↓·불임</td></tr>
+        <tr><td><strong>Se (셀레늄)</strong></td><td>32 ㎍</td><td>심근증, 골격근</td><td>근육 약화</td></tr>
+        <tr><td><strong>F (불소)</strong></td><td>0.95 mg</td><td>뼈·치아</td><td>충치</td></tr>
+        <tr><td><strong>I (요오드)</strong></td><td>0.13 mg</td><td>T3/T4 합성</td><td>갑상선기능저하</td></tr>
+        <tr><td><strong>Fe (철)</strong></td><td>1.1 mg</td><td>혈색소·시토크롬</td><td>빈혈</td></tr>
+        <tr><td><strong>Mo (몰리브덴)</strong></td><td>19 ㎍</td><td>아미노산·퓨린 대사</td><td>황 함유 AA 대사장애</td></tr>
+      </tbody>
+    </table></div>
+    <div class="ib ib-amber" style="margin-top:12px;"><strong>⚠️ 반드시 희석 후 투여</strong>PPN 또는 아미노산 수액에 희석. 성인: 1A(10mL)/day · 소아(15kg↑): 0.1mL/kg/day</div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--sky)"></span>1차 진료 확대 적응증 ★ 매우 유용</div>
+    <div class="g2">
+      <div>
+        <ul class="chk-list">
+          <li class="chk-item"><span class="chk-ico">●</span>창백한 피로</li>
+          <li class="chk-item"><span class="chk-ico">●</span>추위를 잘 타는 사람</li>
+          <li class="chk-item"><span class="chk-ico">●</span>피부·안구 건조증</li>
+          <li class="chk-item"><span class="chk-ico">●</span>수족냉증</li>
+          <li class="chk-item"><span class="chk-ico">●</span>PCOS (생리통, 생리불순, 무월경)</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="chk-list">
+          <li class="chk-item"><span class="chk-ico">●</span>성욕 감소</li>
+          <li class="chk-item"><span class="chk-ico">●</span>여성 탈모</li>
+          <li class="chk-item"><span class="chk-ico">●</span>노인 영양관리</li>
+          <li class="chk-item"><span class="chk-ico">●</span>위장관흡수장애</li>
+          <li class="chk-item"><span class="chk-ico">●</span>만성소모성질환·면역저하</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>권장 IVNT 조합</div>
+    <div class="rx-body" style="max-height:160px;">
+① [감초주 + 비타민C 10g + 멀티비타민 + N/S or 5%DW 200~250mL]
+   + [Addamel N + 아미노산 200~250mL]
+
+② [Addamel N + 삐콤 + 3-Chamber PPN]</div>
+    <div class="ib ib-slate" style="margin-top:12px;"><strong>안정성 메모</strong>혼합 후 2~8℃ 6일, 20~25℃ 48시간. 오염 위험 → 24시간 이내 사용 완료.</div>
+  </div>
+</div>
+
+<!-- DRUG MUGGERS PAGE -->
+<div id="page-drug-muggers" class="page">
+  <div class="ph"><div class="ph-eyebrow">Knowledge+ / 05</div><div class="ph-title">Drug Muggers</div><div class="ph-sub">약이 빼앗아 가는 영양소 — 만성복용약 환자 보충 처방 가이드</div></div>
+  <div class="ib ib-indigo" style="margin-bottom:20px;"><strong>💡 1차 진료 활용 핵심</strong>만성복용약 환자의 "피로 호소" 시 — 단순 종합비타민이 아닌 결핍 영양소를 표적 보충하는 처방이 학문적·심평적으로 합리적입니다.</div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>약물별 결핍 영양소 완전 정리</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>약물</th><th>결핍 영양소</th><th>임상 영향</th></tr></thead>
+      <tbody>
+        <tr><td><strong>항생제</strong></td><td>B군, 장내세균</td><td>HCY↑, 피로, 칸디다, IBS</td></tr>
+        <tr><td><strong>메트포르민 ★</strong></td><td>CoQ10, B12, 엽산</td><td>빈혈, 말초신경 증상, 기억력↓</td></tr>
+        <tr><td><strong>스테로이드</strong></td><td>Ca, Vit D, C, 엽산, K</td><td>골다공증, 감염↑, 우울</td></tr>
+        <tr><td><strong>아스피린</strong></td><td>C, Ca, Fe, 엽산</td><td>골다공, 탈모, HCY↑</td></tr>
+        <tr><td><strong>NSAIDs</strong></td><td>엽산</td><td>HCY↑, 우울</td></tr>
+        <tr><td><strong>이뇨제 (푸로세미드)</strong></td><td>B군, Zn, Ca, Mg, K</td><td>다리경련, 부정맥</td></tr>
+        <tr><td><strong>ACE 억제제</strong></td><td>Zn</td><td>미각·후각 상실, 탈모</td></tr>
+        <tr><td><strong>CCB (칼슘차단제)</strong></td><td>K, CoQ10</td><td>부정맥, 근 약화</td></tr>
+        <tr><td><strong>β-차단제</strong></td><td>CoQ10, 멜라토닌</td><td>불면, 근경련</td></tr>
+        <tr><td><strong>스타틴 ★</strong></td><td>CoQ10</td><td>근육통, 피로, 간독성</td></tr>
+        <tr><td><strong>피브레이트</strong></td><td>Zn, B12</td><td>탈모, HCY↑</td></tr>
+        <tr><td><strong>경구피임약/HRT</strong></td><td>B군, Mg, Se, Zn</td><td>우울, 면역저하</td></tr>
+        <tr><td><strong>MAO 억제제</strong></td><td>B6</td><td>신경통, 우울</td></tr>
+        <tr><td><strong>PPI / H2RA ★</strong></td><td>거의 모든 영양소</td><td>B12 결핍 대표, 철·Mg↓</td></tr>
+        <tr><td><strong>정신과 약물</strong></td><td>CoQ10, B12, B2, 멜라토닌</td><td>두통, 신경통</td></tr>
+        <tr><td><strong>변비치료제 (비사코딜)</strong></td><td>K</td><td>부정맥, 근 약화</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--sky)"></span>자주 만나는 3대 Drug Mugger 처방 포인트</div>
+    <div class="drug-card"><div class="drug-name">메트포르민 복용 중 피로·저림</div><div class="drug-dose">CoQ10 + B12 + 엽산</div><div class="drug-ind">당뇨 환자의 B12 결핍은 매우 흔함. 말초신경 증상이 당뇨 합병증인지 B12 결핍인지 감별 필요.</div></div>
+    <div class="drug-card"><div class="drug-name">스타틴 복용 중 근육통·피로</div><div class="drug-dose">CoQ10 100~200mg/day</div><div class="drug-ind">스타틴이 HMG-CoA 경로 차단 → CoQ10 합성도 함께 억제. 근육통 환자에서 CoQ10 보충 효과적.</div></div>
+    <div class="drug-card"><div class="drug-name">PPI 장기 복용 환자</div><div class="drug-dose">B12 (메틸코발라민) + Mg + 철</div><div class="drug-ind">위산 분비 억제 → 거의 모든 미네랄·비타민 흡수 저하. 6개월 이상 복용 환자는 정기 B12 체크 권장.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--purple)"></span>호모시스테인(HCY) 강하 3종 세트</div>
+    <div class="ib ib-purple"><strong>B6 + B9 (엽산) + B12 동시 투여</strong>동맥경화·심혈관 위험 환자의 호모시스테인 강하 목적 보조요법. HCY↑ 환자에서 심평원이 인정하는 근거 있음. 차트에 "호모시스테인 상승(E72.1)" 코드 기재 권장.</div>
+  </div>
+</div>
+
+<!-- CHEAT SHEET PAGE -->
+<div id="page-cheatsheet" class="page">
+  <div class="ph"><div class="ph-eyebrow">Reference / 00</div><div class="ph-title">진료실 Cheat Sheet</div><div class="ph-sub">증상·호소별 1차 추천 IVNT — 빠른 처방 참조</div></div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot"></span>환자 호소 → 추천 IVNT 처방</div>
+    <div class="twrap"><table class="tbl">
+      <thead><tr><th>환자 호소</th><th>추천 처방</th><th>핵심 약물</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>단순 피로</td><td>Mega 10</td><td>비타민C 10g + 삐콤 + ALA</td><td>1회성 처방</td></tr>
+        <tr><td>만성피로 / CFS</td><td>Myers 20 시리즈</td><td>Myers + ALA + 글루타치온</td><td>3~5회 시리즈</td></tr>
+        <tr><td>편두통 (급성)</td><td>Myers 10~20</td><td>마그네슘 충분히 (10mL↑)</td><td>속도 천천히</td></tr>
+        <tr><td>섬유근통 / 만성근통</td><td>Myers 20 + 글루타치온</td><td>Mg 15mL + 글루타치온 1,200mg</td><td>시리즈 권장</td></tr>
+        <tr><td>잦은 감기</td><td>Mega 20 + 셀레나제</td><td>비타민C 20g + 셀레늄 100㎍</td><td>간격 1시간</td></tr>
+        <tr><td>알레르기 비염</td><td>Myers 10</td><td>기본 Myers 조합</td><td>계절성 반복</td></tr>
+        <tr><td>당뇨 다발신경병증</td><td>ALA + B-comp + B12</td><td>ALA 600mg + 메코발라민</td><td>내분비내과 병행</td></tr>
+        <tr><td>항암 보조</td><td>IVC 30~50g + ALA</td><td>비타민C 고용량 + ALA 300~600mg</td><td>종양내과 협의 필수</td></tr>
+        <tr><td>미백 / 간 피로</td><td>글루타치온 단독</td><td>타치온 1,200~2,000mg</td><td>15분 내 투여</td></tr>
+        <tr><td>PCOS, 여성탈모, 수족냉증</td><td>Multi-Blue 5 or Addamel N</td><td>미네랄 복합 주사</td><td>아미노산 수액에 희석</td></tr>
+        <tr><td>임신 준비 / 임신 초기</td><td>엽산 + B12</td><td>엽산 400~600㎍DFE + 메틸코발라민</td><td>임신 3개월 전부터</td></tr>
+        <tr><td>메트포르민 복용 피로</td><td>B12 + 엽산 + CoQ10</td><td>메코발라민 + 폴린정</td><td>Drug Mugger 대응</td></tr>
+        <tr><td>스타틴 복용 근육통</td><td>CoQ10</td><td>코큐텐 100~200mg</td><td>Drug Mugger 대응</td></tr>
+        <tr><td>PPI 장기 복용</td><td>B12 + Mg + 철</td><td>메코발라민 + 황산마그네슘</td><td>Drug Mugger 대응</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--sky)"></span>Myers 시리즈 vs Mega 시리즈 비교</div>
+    <div class="cmp">
+      <div class="ib ib-sky"><strong>💊 Mega 시리즈 (비타민C 중심)</strong>Mega 10 = N/S 250 + C 10g + Bcomp 0.5A + Mg 2~3mL + Ca 2~3mL — 40,000원<br>Mega 20 = N/S 250 + C 20g + Bcomp 0.5A + Mg 3~4mL + Ca 3~4mL — 45,000원<br>Mega 30 = S/W 500 + C 30g + Bcomp 1A + Mg 5~6mL + Ca 5~6mL — 50,000원<br><span style="font-size:11px;color:var(--fg3);">▷ 투여 속도: 120~150 gtt</span></div>
+      <div class="ib ib-indigo"><strong>🧪 Myers 시리즈 (B군+Mg 중심)</strong>Myers 10 = N/S 250 + C 10g + Bcomp + B5·6·12 + Mg 10mL + Ca — 50,000원<br>Myers 20 = N/S 250 + C 20g + Bcomp + B5·6·12 + Mg 10mL + Ca — 55,000원<br>Myers 30 = S/W 500 + C 30g + Bcomp + B5·6·12 + Mg 15mL + Ca — 60,000원<br><span style="font-size:11px;color:var(--fg3);">▷ 투여 속도: 120~150 gtt</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--emerald)"></span>IVNT 표준 프로토콜 (독수리 오형제)</div>
+    <div class="cmp">
+      <div class="ib ib-green"><strong>시리즈 요법</strong>Mega 10/20/30 또는 Myers 10/20/30<br>+<br>[N/S 250 + 마늘주(Allithiamine) 1A + 알파리포산 1A]</div>
+      <div class="ib ib-slate"><strong>단독 요법</strong>[N/S 250 + Bcomp 1A + 마늘주 1A + 알파리포산 1A]</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--amber)"></span>진료실 환자 한 줄 설명 템플릿</div>
+    <div class="rx-body" style="max-height:180px;">"현재 ___ (증상) 상태에서 ___ (영양소)이/가 부족할 가능성이 있어, 정맥 영양주사로 단기간 회복을 도와드리는 방법입니다. 3~5회 간격을 두고 시리즈 시행 시 효과가 더 안정적입니다. 본 치료는 비급여이며, 효과는 개인차가 있습니다."</div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--rose)"></span>비급여 사전 동의 필수 항목</div>
+    <ul class="chk-list">
+      <li class="chk-item"><span class="chk-ico">✦</span>비급여임을 명시</li>
+      <li class="chk-item"><span class="chk-ico">✦</span>부작용(혈관통, 일시적 두근거림, 어지러움) 설명</li>
+      <li class="chk-item"><span class="chk-ico">✦</span>알레르기·G6PD·신부전·임신 여부 사전 확인</li>
+      <li class="chk-item"><span class="chk-ico">✦</span>시술 후 응급증상 발생 시 연락처 안내</li>
+    </ul>
+    <div class="ib ib-amber" style="margin-top:12px;"><strong>심평·실손 차트 기록 권장</strong>주증상에 부합하는 ICD-10 코드 기재 (R53, G43, M79.7, J30 등). "단순 피로/미용" 단독 코드는 삭감/면책 가능. 환자가 실손 청구 의사 시: 실손 약관에 따라 영양주사는 "치료 목적이 아닌 경우" 면책 — 정확히 안내.</div>
+  </div>
+  <div class="card">
+    <div class="card-ttl"><span class="dot" style="background:var(--purple)"></span>최신 지견 (2020~)</div>
+    <div class="drug-card"><div class="drug-name">고용량 IVC + 글루타치온 + ALA 조합</div><div class="drug-dose">COVID-19 이후 주목</div><div class="drug-ind">cytokine storm 완화 보조요법으로 다수 임상 보고. 단, 표준치료 대체가 아닌 보조요법임을 환자에게 명확히 설명.</div></div>
+    <div class="drug-card"><div class="drug-name">셀레늄</div><div class="drug-dose">면역 보조</div><div class="drug-ind">COVID-19 회복기 면역 보조요법으로 연구 진행 중.</div></div>
+    <div class="drug-card"><div class="drug-name">B12 메틸코발라민</div><div class="drug-dose">고용량 사용 보고 증가</div><div class="drug-ind">자폐 보조, Bell's palsy, 다발성 경화증에 고용량 사용 보고 증가.</div></div>
+    <div class="drug-card"><div class="drug-name">알파리포산</div><div class="drug-dose">대사 근거 누적</div><div class="drug-ind">대사증후군·NAFLD에서 염증지표(CRP, IL-6, TNFα)↓ 근거 누적.</div></div>
+  </div>
+</div>
+
 </div><!-- /main -->
 
 <!-- BOTTOM NAV -->
@@ -1320,6 +1618,8 @@ const P2B = {
   'rx-gastro':'bn-rx','rx-cold':'bn-rx','rx-herpes':'bn-rx','rx-skin':'bn-rx','rx-cervical':'bn-rx','rx-liver':'bn-rx','rx-immune':'bn-rx',
   recipe:'bn-recipe',
   opinion:'bn-ref', drugs:'bn-ref', emergency:'bn-ref',
+  ala:'bn-know', selenium:'bn-know', mineral5:'bn-know', mineral9:'bn-know',
+  'drug-muggers':'bn-ref', cheatsheet:'bn-ref',
 };
 
 function go(id, el, title) {
