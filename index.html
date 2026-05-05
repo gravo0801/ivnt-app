@@ -81,7 +81,7 @@ body {
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 200;
+  z-index: 350;
   transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
 .sidebar::-webkit-scrollbar { width: 4px; }
@@ -500,9 +500,8 @@ body {
 /* ── BACKDROP ── */
 .backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(17,24,39,.35); z-index: 300;
+  background: rgba(17,24,39,.4); z-index: 300;
   opacity: 0; transition: opacity .3s; pointer-events: none;
-  backdrop-filter: blur(2px);
 }
 .backdrop.on { opacity: 1; pointer-events: auto; }
 
